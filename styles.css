@@ -78,19 +78,25 @@ body { margin: 0; font-family: Inter, Arial, sans-serif; color: var(--grafito); 
   .btn { width: 100%; text-align: center; }
 }
 
-.switcher .btn{padding:10px 14px;font-size:11px}
+.front-switcher{position:fixed;top:16px;right:16px;z-index:30;display:flex;gap:8px;background:rgba(20,40,31,.7);padding:8px;border:1px solid rgba(221,190,120,.45);backdrop-filter:blur(6px)}
+.chip{color:#f5efe3;text-decoration:none;border:1px solid rgba(221,190,120,.45);padding:8px 12px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.chip.active,.chip:hover{background:#c2a46b;color:#11251b}
 .premium-page{background:#f4efe6}
-.premium-topbar{backdrop-filter:blur(6px);background:rgba(255,255,255,.92)}
-.premium-hero{position:relative;min-height:82vh;background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2200&q=80');background-size:cover;background-position:center;display:grid;align-items:center}
-.premium-overlay{position:absolute;inset:0;background:radial-gradient(circle at 55% 18%,rgba(248,244,235,.82) 0%,rgba(30,58,42,.2) 42%,rgba(16,37,29,.8) 100%)}
-.premium-inner{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:80px 28px;color:#f8f3ea}
-.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:#d9bf85}
-.premium-inner h1{margin:10px 0 16px;font-family:'Cormorant Garamond',serif;font-size:clamp(54px,7vw,98px);line-height:.92}
-.lead{max-width:56ch;font-size:20px}
-.premium-cards{margin-top:34px;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.premium-cards article{background:rgba(13,35,26,.62);border:1px solid rgba(218,192,136,.45);padding:20px;border-radius:8px}
-.premium-cards h3,.premium-pillars h3{font-family:Cinzel,serif;color:#dbbe82;margin:0 0 8px}
-.premium-cards p,.premium-pillars p{margin:0;color:#f4eee2}
-.premium-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:28px;background:#163828}
-.premium-pillars article{padding:18px;border:1px solid rgba(212,186,125,.4);background:rgba(10,27,20,.38)}
-@media (max-width:900px){.premium-cards,.premium-pillars{grid-template-columns:1fr}}
+.premium-hero{position:relative;min-height:84vh;background-image:url('https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=2200&q=80');background-size:cover;background-position:center;display:flex;flex-direction:column;justify-content:flex-end}
+.premium-overlay{position:absolute;inset:0;background:linear-gradient(100deg,rgba(12,33,25,.93) 0%,rgba(12,33,25,.8) 43%,rgba(12,33,25,.62) 66%,rgba(12,33,25,.72) 100%)}
+.premium-inner{position:relative;z-index:1;max-width:1220px;width:100%;margin:0 auto;padding:120px 28px 52px;display:grid;grid-template-columns:1.2fr .8fr;gap:48px;align-items:start;color:#fbf6ee}
+.copy h1{margin:0;font-family:'Cormorant Garamond',serif;font-size:clamp(56px,7.2vw,108px);line-height:.9}
+.copy h2{margin:22px 0 12px;font-family:Cinzel,serif;color:#d9bf85;font-size:clamp(24px,2.2vw,40px);text-transform:uppercase;letter-spacing:.06em}
+.copy p{margin:0;font-size:clamp(24px,1.9vw,34px);font-family:'Cormorant Garamond',serif}
+.verse-side{padding:20px 24px;border-left:2px solid rgba(221,190,120,.45);background:rgba(8,23,17,.26)}
+.verse-side blockquote{margin:0 0 12px;font-family:'Cormorant Garamond',serif;font-size:clamp(31px,2vw,42px);line-height:1.1}
+.verse-side p{margin:0;font-family:Cinzel,serif;color:#e2cd9b;letter-spacing:.08em}
+.premium-cards{position:relative;z-index:1;max-width:1280px;margin:0 auto 24px;padding:0 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.premium-cards article{background:rgba(8,24,18,.66);border:1px solid rgba(221,190,120,.4);padding:18px;min-height:198px;backdrop-filter:blur(2px)}
+.premium-cards h3{margin:12px 0 8px;font-family:Cinzel,serif;color:#dbbe82;font-size:25px}
+.premium-cards p{margin:0;color:#f2ebdd;font-size:27px;font-family:'Cormorant Garamond',serif;line-height:1.2}
+.premium-verse{text-align:center;background:#f7f1e7;padding:42px 20px 50px;color:#233b2f}
+.premium-verse .quote{font-size:58px}
+.premium-verse .ref{color:#6f5d3b}
+@media (max-width:1100px){.premium-inner{grid-template-columns:1fr;gap:24px;padding-top:90px}.premium-cards{grid-template-columns:1fr 1fr}}
+@media (max-width:720px){.premium-cards{grid-template-columns:1fr}.front-switcher{left:8px;right:8px;justify-content:center}.chip{font-size:11px;padding:7px 10px}}
