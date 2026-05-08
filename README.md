@@ -16,6 +16,7 @@ Sitio web estatico para la iglesia Sendas de Gracia. El proyecto contiene varias
 - `assets/icons/`: iconografia y logos.
 - `assets/images/`: fotografias e imagenes de fondo.
 - `docs/design-guide.md`: guia de diseno y requisitos visuales.
+- `docs/codex-setup.md`: notas para restaurar MCPs y setup de Codex.
 
 ## Guia de diseno
 
