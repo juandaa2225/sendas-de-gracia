@@ -15,6 +15,7 @@
         <img src="assets/icons/logo-verde.svg" alt="Logo Sendas de Gracia" class="brand-logo" width="42" height="42" />
         <h1 class="brand-title">Sendas de Gracia</h1>
       </div>
+      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
       <nav class="nav-links" aria-label="Navegación principal">
         <a href="#">Inicio</a>
         <a href="#">Nosotros</a>
@@ -22,11 +23,6 @@
         <a href="#">Recursos</a>
         <a href="#">Contacto</a>
       </nav>
-      <div class="header-actions">
-        <a class="btn btn-ghost" href="index.html">Front 1</a>
-        <a class="btn btn-ghost" href="clasico.html">Front 2</a>
-        <a class="btn btn-primary" href="premium.html">Front 3</a>
-      </div>
     </header>
     <main>
       <section class="premium-hero">
@@ -77,5 +73,24 @@
         <p class="ref">2 Timoteo 2:15</p>
       </section>
     </main>
+  
+    <details class="front-mini-switcher">
+      <summary title="Cambiar front">•</summary>
+      <div class="front-mini-panel">
+        <a href="index.html">Front 1</a>
+        <a href="clasico.html">Front 2</a>
+        <a href="premium_2.html">Premium 2</a>
+      </div>
+    </details>
+  
+    <script>
+      document.querySelectorAll('.nav-toggle').forEach((btn)=>{
+        btn.addEventListener('click',()=>{
+          const topbar=btn.closest('.topbar');
+          const open=topbar.classList.toggle('menu-open');
+          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+      });
+    </script>
   </body>
 </html>

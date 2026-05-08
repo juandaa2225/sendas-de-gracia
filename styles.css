@@ -105,3 +105,35 @@ body { margin: 0; font-family: Inter, Arial, sans-serif; color: var(--grafito); 
 .premium-verse .ref{color:#6f5d3b}
 @media (max-width:1100px){.premium-inner{grid-template-columns:1fr;gap:24px;padding-top:90px}.premium-cards{grid-template-columns:1fr 1fr}}
 @media (max-width:720px){.premium-cards{grid-template-columns:1fr}.front-switcher{left:8px;right:8px;justify-content:center}.chip{font-size:11px;padding:7px 10px}}
+
+/* Mobile menu + subtle front switcher */
+.nav-toggle{display:none;border:1px solid var(--borde);background:#fff;color:#2b3d33;border-radius:6px;padding:4px 9px;font-size:18px;line-height:1;cursor:pointer}
+.front-mini-switcher{position:fixed;right:8px;bottom:8px;z-index:60;opacity:.28;transition:opacity .2s}
+.front-mini-switcher:hover,.front-mini-switcher[open]{opacity:.9}
+.front-mini-switcher summary{list-style:none;cursor:pointer;color:#2b3d33;background:rgba(255,255,255,.75);border:1px solid rgba(31,61,46,.25);width:18px;height:18px;border-radius:99px;display:grid;place-items:center;font-size:10px}
+.front-mini-switcher summary::-webkit-details-marker{display:none}
+.front-mini-panel{margin-top:4px;background:rgba(255,255,255,.95);border:1px solid rgba(31,61,46,.18);padding:6px;border-radius:8px;display:grid;gap:4px;min-width:88px}
+.front-mini-panel a{text-decoration:none;font-size:10px;color:#2b3d33}
+
+/* Premium typography refinement */
+.copy h1{font-size:clamp(38px,4.5vw,66px);line-height:1}
+.copy h2{font-size:clamp(16px,1.45vw,24px);letter-spacing:.04em}
+.copy p{font-size:clamp(18px,1.25vw,24px)}
+.verse-side blockquote{font-size:clamp(22px,1.5vw,31px);line-height:1.25}
+.premium-cards h3{font-size:21px}
+.premium-cards p{font-size:16px}
+.premium-verse .quote{font-size:clamp(34px,4vw,48px)}
+
+@media (max-width: 920px){
+  .nav-toggle{display:block}
+  .topbar{padding:12px 14px;position:sticky}
+  .brand-logo{width:44px;height:44px}
+  .brand-title{font-size:clamp(18px,5vw,24px)}
+  .nav-links{display:none;width:100%;order:3;flex-direction:column;gap:10px;padding-top:8px}
+  .topbar.menu-open .nav-links{display:flex}
+}
+@media (max-width: 720px){
+  .copy h1{font-size:clamp(31px,10vw,46px)}
+  .copy h2{font-size:clamp(14px,4.4vw,18px)}
+  .copy p{font-size:18px}
+}
