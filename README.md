@@ -14,6 +14,11 @@ Sitio web estatico para la iglesia Sendas de Gracia. El proyecto contiene varias
 - `premium_2.html`: variante premium alternativa.
 - `styles.css`: estilos compartidos.
 - `assets/`: logos, iconos e imagenes del sitio.
+- `docs/design-guide.md`: guia de diseno y requisitos visuales.
+
+## Guia de diseno
+
+La direccion visual del sitio esta documentada en [docs/design-guide.md](docs/design-guide.md). Esa guia define paleta, proporcion, estructura de home, hero, tipografias, responsive y criterios de hacer/evitar.
 
 ## Desarrollo local
 
