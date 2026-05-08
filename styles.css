@@ -11,6 +11,11 @@ body { margin: 0; font-family: Inter, Arial, sans-serif; color: var(--grafito); 
 
 .topbar { background: #fff; border-bottom: 1px solid var(--borde); display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 44px; position: sticky; top: 0; z-index: 10; }
 .brand { display: flex; align-items: center; gap: 12px; }
+
+.brand-logo{display:block;width:42px;height:42px;object-fit:contain}
+.premium-topbar{position:relative;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(4px)}
+.premium-topbar .nav-links a{color:#23372c}
+
 .logo-mark { color: var(--verde-bosque); font-size: 30px; }
 .brand-title { margin: 0; font-family: Cinzel, serif; font-size: clamp(22px, 2.3vw, 34px); color: var(--verde-bosque); letter-spacing: 0.02em; }
 .nav-links { display: flex; gap: 24px; }
