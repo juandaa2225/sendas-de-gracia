@@ -2,78 +2,33 @@ name: Deploy static content to Pages
 
 on:
   push:
-    branches:
-      - main
-      - "feature/**"
+    branches: ["main"]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: "pages-${{ github.ref_name }}"
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout current branch
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set deploy path
-        id: deploy_path
-        run: |
-          if [ "${GITHUB_REF_NAME}" = "main" ]; then
-            echo "path=." >> "$GITHUB_OUTPUT"
-          else
-            SAFE_BRANCH=$(echo "${GITHUB_REF_NAME}" | sed 's#[^a-zA-Z0-9._-]#-#g')
-            echo "path=previews/$SAFE_BRANCH" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Checkout gh-pages
-        uses: actions/checkout@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          ref: gh-pages
-          path: gh-pages
-        continue-on-error: true
-
-      - name: Prepare gh-pages branch
-        run: |
-          if [ ! -d gh-pages/.git ]; then
-            mkdir gh-pages
-            cd gh-pages
-            git init
-            git checkout -b gh-pages
-          fi
-
-      - name: Copy site files
-        run: |
-          mkdir -p "gh-pages/${{ steps.deploy_path.outputs.path }}"
-
-          if [ "${{ steps.deploy_path.outputs.path }}" = "." ]; then
-            find gh-pages -mindepth 1 \
-              ! -path "gh-pages/.git*" \
-              ! -path "gh-pages/previews*" \
-              -exec rm -rf {} +
-          else
-            rm -rf "gh-pages/${{ steps.deploy_path.outputs.path }}"
-            mkdir -p "gh-pages/${{ steps.deploy_path.outputs.path }}"
-          fi
-
-          rsync -av \
-            --exclude ".git" \
-            --exclude ".github" \
-            --exclude "gh-pages" \
-            ./ "gh-pages/${{ steps.deploy_path.outputs.path }}/"
-
-      - name: Commit and push
-        run: |
-          cd gh-pages
-          touch .nojekyll
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git commit -m "Deploy ${GITHUB_REF_NAME}" || echo "No changes to commit"
-          git push origin gh-pages --force
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
