@@ -12,6 +12,7 @@ Sitio web estatico para la iglesia Sendas de Gracia. El proyecto contiene varias
 - `clasico.html`: variante clasica.
 - `premium.html`: variante premium.
 - `premium_2.html`: variante premium alternativa.
+- `front_comunidad.html`: variante orientada a comunidad, reuniones y visita.
 - `styles.css`: estilos compartidos.
 - `assets/icons/`: iconografia y logos.
 - `assets/images/`: fotografias e imagenes de fondo.

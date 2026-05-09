@@ -10,7 +10,7 @@
 body { margin: 0; font-family: Inter, Arial, sans-serif; color: var(--grafito); background: var(--marfil); line-height: 1.5; }
 
 .topbar { background: #fff; border-bottom: 1px solid var(--borde); display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 44px; position: sticky; top: 0; z-index: 10; }
-.brand { display: flex; align-items: center; gap: 12px; }
+.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
 
 .brand-logo{display:block;width:64px;height:64px;object-fit:contain}
 .premium-topbar{position:relative;z-index:20;background:rgba(255,255,255,.96);backdrop-filter:blur(4px)}
@@ -114,6 +114,57 @@ body { margin: 0; font-family: Inter, Arial, sans-serif; color: var(--grafito); 
 .front-mini-switcher summary::-webkit-details-marker{display:none}
 .front-mini-panel{margin-top:4px;background:rgba(255,255,255,.95);border:1px solid rgba(31,61,46,.18);padding:6px;border-radius:8px;display:grid;gap:4px;min-width:88px}
 .front-mini-panel a{text-decoration:none;font-size:10px;color:#2b3d33}
+
+/* Front comunidad */
+.community-page{background:#f7f3ea;color:#334139}
+.community-topbar{background:rgba(247,243,234,.94);backdrop-filter:blur(8px)}
+.community-topbar .brand{gap:14px}
+.brand-lockup{display:grid;gap:2px}
+.brand-subtitle{font-family:Inter,Arial,sans-serif;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#9c7c3a}
+.community-topbar .nav-links a{color:#26382f}
+.community-hero{min-height:clamp(620px,calc(100vh - 101px),720px);position:relative;display:grid;grid-template-columns:minmax(0,1fr) 320px;align-items:center;gap:36px;padding:62px 44px 50px;color:#fff;background-image:linear-gradient(90deg,rgba(13,36,27,.88) 0%,rgba(13,36,27,.74) 42%,rgba(13,36,27,.38) 72%,rgba(13,36,27,.62) 100%),url('assets/images/bosque.png');background-size:cover;background-position:center}
+.community-hero-copy{max-width:780px}
+.section-kicker{margin:0 0 12px;color:#9c7c3a;text-transform:uppercase;letter-spacing:.12em;font-size:12px;font-weight:700}
+.community-hero .section-kicker{color:#e3c983}
+.community-hero h1{margin:0;font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6vw,82px);line-height:.96;font-weight:700;max-width:860px}
+.community-subtitle{margin:22px 0 0;max-width:620px;font-family:'Cormorant Garamond',serif;font-size:clamp(25px,2.4vw,38px);line-height:1.14;color:#fbf6ea}
+.service-note{align-self:center;background:rgba(247,243,234,.94);color:#24382e;border-top:4px solid #c2a46b;padding:22px;box-shadow:0 18px 46px rgba(0,0,0,.18)}
+.service-note span{display:block;color:#876f3e;text-transform:uppercase;letter-spacing:.1em;font-size:12px;font-weight:700}
+.service-note strong{display:block;margin:6px 0 10px;font-family:Cinzel,serif;font-size:30px;color:#1f3d2e}
+.service-note p{margin:0;font-size:15px}
+.welcome-band{display:grid;grid-template-columns:.9fr 1.1fr;gap:48px;align-items:center;padding:66px 44px;background:#fffdf8;border-bottom:1px solid rgba(31,61,46,.14)}
+.welcome-band h2,.section-heading h2,.sermon-copy h2,.visit-section h2{margin:0;font-family:'Cormorant Garamond',serif;color:#1f3d2e;font-size:clamp(34px,4vw,54px);line-height:1.02}
+.welcome-band>p{margin:0;font-size:19px;max-width:720px}
+.schedule-section,.pillar-section{padding:72px 44px}
+.section-heading{max-width:780px;margin-bottom:30px}
+.schedule-grid,.pillar-grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.schedule-grid article,.pillar-grid article{background:#fff;border:1px solid rgba(31,61,46,.14);padding:24px;min-height:190px}
+.schedule-grid span{display:block;color:#c2a46b;font-family:Cinzel,serif;font-size:18px;margin-bottom:28px}
+.schedule-grid h3,.pillar-grid h3{margin:0 0 10px;font-family:Cinzel,serif;color:#1f3d2e;font-size:23px}
+.schedule-grid p,.pillar-grid p{margin:0;font-size:16px}
+.pillar-section{background:#ebe3d7}
+.pillar-grid article{background:#f7f3ea}
+.pillar-grid img{display:block;margin-bottom:18px}
+.sermon-section{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:54px 44px;background:#1f3d2e;color:#f7f3ea}
+.sermon-copy{max-width:760px}
+.sermon-copy h2{color:#f7f3ea;font-size:clamp(32px,3.4vw,48px)}
+.sermon-section .btn-outline{border-color:#d8bd7c;color:#f7f3ea}
+.visit-section{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:64px 44px;background:#fffdf8}
+.visit-section p{max-width:680px;margin:14px 0 0;font-size:18px}
+
+@media (max-width: 960px){
+  .community-hero{grid-template-columns:1fr;min-height:auto;padding:86px 20px 28px}
+  .service-note{max-width:440px}
+  .welcome-band,.visit-section{grid-template-columns:1fr;padding-left:20px;padding-right:20px}
+  .schedule-section,.pillar-section,.sermon-section{padding-left:20px;padding-right:20px}
+  .schedule-grid,.pillar-grid{grid-template-columns:1fr}
+}
+@media (max-width: 720px){
+  .community-hero h1{font-size:clamp(38px,11vw,52px)}
+  .community-subtitle{font-size:22px}
+  .service-note strong{font-size:26px}
+  .sermon-section{display:grid}
+}
 
 /* Premium typography refinement */
 .copy h1{font-size:clamp(38px,4.5vw,66px);line-height:1}
