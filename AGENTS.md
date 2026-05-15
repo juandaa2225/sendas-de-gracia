@@ -13,5 +13,6 @@ Reglas rapidas:
 - No subas artefactos de Playwright ni capturas locales.
 - Guarda las capturas PNG de Playwright en `.playwright-mcp/screenshots/` con numeracion incremental (`001-...`, `002-...`).
 - Valida cambios visuales con Playwright en desktop y movil cuando afecten UI.
+- Mantén la configuracion MCP esperada en `.devcontainer/codex-config.toml`; el `postStartCommand` de Codespaces debe registrar Playwright si falta en `~/.codex/config.toml`.
 - Mantén el sitio sencillo, reverente, claro y consistente con la guia de diseno.
 - Si durante el trabajo aparece una convencion, decision o flujo que deba recordarse en futuros chats, propon agregarlo aqui o en el documento correspondiente dentro de `docs/`.
