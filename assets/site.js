@@ -1,5 +1,6 @@
 const header = document.querySelector(".site-header");
 const navToggle = document.querySelector(".nav-toggle");
+const assetBase = new URL(".", document.currentScript?.src || window.location.href);
 
 if (header && navToggle) {
   navToggle.addEventListener("click", () => {
@@ -10,7 +11,7 @@ if (header && navToggle) {
 
 const formatDate = (value) => {
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Predicacion reciente";
+  if (Number.isNaN(date.getTime())) return "Predicación reciente";
   return new Intl.DateTimeFormat("es-CO", {
     day: "numeric",
     month: "long",
@@ -37,13 +38,13 @@ const renderSermons = (container, sermons) => {
   const selected = sermons.slice(0, limit);
 
   if (!selected.length) {
-    container.innerHTML = `<p class="sermon-empty">${container.dataset.empty || "No hay predicaciones disponibles."}</p>`;
+    container.innerHTML = `<p class="sermon-empty">${container.dataset.empty || "No hay predicaciones disponibles."} <a href="https://www.youtube.com/@comunidaddegraciaenvigado4810" target="_blank" rel="noreferrer">Abrir canal.</a></p>`;
     return;
   }
 
   container.innerHTML = selected
     .map((sermon) => {
-      const title = escapeHtml(sermon.title || "Predicacion reciente");
+      const title = escapeHtml(sermon.title || "Predicación reciente");
       const url = escapeHtml(sermon.url || `https://www.youtube.com/watch?v=${sermon.videoId}`);
       const thumbnail = escapeHtml(sermon.thumbnail || `https://i.ytimg.com/vi/${sermon.videoId}/hqdefault.jpg`);
       const description = escapeHtml(trimText(sermon.description || "Mensaje reciente del canal actual de la iglesia."));
@@ -65,11 +66,12 @@ const renderSermons = (container, sermons) => {
 
 document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
   try {
-    const response = await fetch("assets/data/sermons.json", { cache: "no-store" });
+    const response = await fetch(new URL("data/sermons.json", assetBase), { cache: "no-store" });
     if (!response.ok) throw new Error(`Sermons request failed: ${response.status}`);
     const data = await response.json();
     renderSermons(container, Array.isArray(data.videos) ? data.videos : []);
   } catch (error) {
     console.warn(error);
+    renderSermons(container, []);
   }
 });

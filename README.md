@@ -1,35 +1,38 @@
 # Sendas de Gracia
 
-Sitio web estatico para la iglesia Sendas de Gracia. El proyecto publica una experiencia multipagina sencilla, pastoral y consistente con la guia visual. GitHub Pages se actualiza cuando se publica `main`, `feature/**` o `hotfix/**`, y tambien refresca diariamente el feed de predicaciones desde YouTube.
+Sitio web estático para la iglesia Sendas de Gracia. El proyecto publica una experiencia multipágina sencilla, pastoral y consistente con la guía visual. GitHub Pages se actualiza cuando se publica `main`, `feature/**` o `hotfix/**`, y también refresca diariamente el feed de predicaciones desde YouTube.
 
-## Pagina publicada
+## Página publicada
 
-[Ver la pagina final](https://juandaa2225.github.io/sendas-de-gracia/)
+[Ver la página final](https://juandaa2225.github.io/sendas-de-gracia/)
 
 ## Estructura
 
-- `index.html`: portada principal restaurada.
-- `nosotros.html`: identidad, convicciones y vida comunitaria.
-- `predicaciones.html`: archivo reciente conectado al canal actual de YouTube.
-- `ministerios.html`: ministerios y espacios de servicio.
-- `recursos.html`: materiales y enlaces utiles.
-- `visitanos.html`: informacion para visitantes.
+- `index.html`: portada principal.
+- `nosotros/`: identidad, convicciones y vida comunitaria.
+- `predicaciones/`: archivo reciente conectado al canal actual de YouTube.
+- `ministerios/`: ministerios y espacios de servicio.
+- `recursos/`: materiales y enlaces útiles.
+- `recursos/blog/`: índice preparado para artículos futuros.
+- `recursos/declaracion-doctrinal/`: placeholder de declaración doctrinal por publicar.
+- `visitanos/`: información para visitantes.
+- `*.html` heredados: redirects de compatibilidad hacia las rutas con carpeta.
 - `styles.css`: estilos compartidos.
-- `assets/site.js`: navegacion movil y render de predicaciones.
+- `assets/site.js`: navegación móvil y render de predicaciones.
 - `assets/data/sermons.json`: predicaciones recientes generadas desde YouTube RSS.
-- `assets/icons/`: iconografia y logos.
-- `assets/images/`: fotografias e imagenes de fondo.
+- `assets/icons/`: iconografía y logos.
+- `assets/images/`: fotografías e imágenes de fondo.
 - `scripts/update-youtube-feed.mjs`: actualiza el JSON de predicaciones.
-- `docs/design-guide.md`: guia de diseno y requisitos visuales.
+- `docs/design-guide.md`: guía de diseño y requisitos visuales.
 - `docs/codex-setup.md`: notas para restaurar MCPs y setup de Codex.
 
-## Guia de diseno
+## Guía de diseño
 
-La direccion visual del sitio esta documentada en [docs/design-guide.md](docs/design-guide.md). Esa guia define paleta, proporcion, estructura de home, hero, tipografias, responsive y criterios de hacer/evitar.
+La dirección visual del sitio está documentada en [docs/design-guide.md](docs/design-guide.md). Esa guía define paleta, proporción, estructura de home, hero, tipografías, responsive y criterios de hacer/evitar.
 
 ## Desarrollo local
 
-Puedes abrir los archivos HTML directamente en el navegador, o levantar un servidor local desde la raiz del repo:
+Puedes abrir los archivos HTML directamente en el navegador, o levantar un servidor local desde la raíz del repo:
 
 ```bash
 python3 -m http.server 8000
@@ -45,4 +48,4 @@ node scripts/update-youtube-feed.mjs
 
 ## Deploy
 
-El deploy esta configurado con GitHub Actions en `.github/workflows/deploy-pages.yml`. El workflow actualiza el feed de YouTube antes de subir el artefacto y corre tambien una vez al dia para mantener las predicaciones ordenadas con el ultimo video publicado primero.
+El deploy está configurado con GitHub Actions en `.github/workflows/deploy-pages.yml`. El workflow actualiza el feed de YouTube antes de subir el artefacto y corre también una vez al día para mantener las predicaciones ordenadas con el último video publicado primero.

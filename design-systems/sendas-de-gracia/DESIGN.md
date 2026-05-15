@@ -20,7 +20,7 @@ Tokens:
 
 | Token | Hex | Use |
 | --- | --- | --- |
-| Forest green | `#1F3D2E` | Institutional color, navigation, footer, strong headings, deep bands |
+| Forest green | `#254117` | Institutional color, navigation, footer, strong headings, deep bands |
 | Liturgical gold | `#C2A46B` | CTAs, icons, thin rules, subtle emphasis |
 | Warm ivory | `#F7F3EA` | Main background and visual breathing room |
 | Stone beige | `#D8CFC2` | Secondary backgrounds, soft blocks, cards, separators |
@@ -85,7 +85,7 @@ Buttons:
 
 Navigation:
 
-- Main links: Inicio, Nosotros, Predicaciones, Ministerios, Recursos, Visitanos.
+- Main links: Inicio, Nosotros, Predicaciones, Ministerios, Recursos, Visítanos.
 - Primary CTA: Planifica tu visita.
 - Secondary CTA: Ver predicaciones.
 - Donar may appear in navigation but should not compete visually with visiting.
@@ -124,8 +124,8 @@ Copy should be concrete and useful. Avoid vague marketing language, hype, and se
 
 Preferred hero message:
 
-- Title: `Impartimos fielmente la verdad biblica`
-- Subtitle: `Para que conozcan a Dios y le sirvan en adoracion, ministerio y evangelismo.`
+- Title: `Impartimos fielmente la verdad bíblica`
+- Subtitle: `Para que conozcan a Dios y le sirvan en adoración, ministerio y evangelismo.`
 
 ## Accessibility
 
