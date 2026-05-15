@@ -41,8 +41,22 @@ command = "npx"
 args = ["-y", "@playwright/mcp@latest", "--headless"]
 ```
 
+El repo guarda la configuracion esperada en:
+
+```text
+.devcontainer/codex-config.toml
+```
+
+Codespaces ejecuta este bootstrap al arrancar:
+
+```text
+.devcontainer/setup-codex.sh
+```
+
+El script no reemplaza `~/.codex/config.toml`; solo registra el MCP de Playwright con `codex mcp add` si falta. Esto evita perder el setup cuando `$HOME` se resetea en un Codespace nuevo o reconstruido.
+
 ## Notas de Codespaces
 
 - Si se vuelve al mismo Codespace, la configuracion normalmente sigue disponible.
-- Si se abre un Codespace nuevo, hay que correr de nuevo el comando de instalacion.
-- Si se reconstruye el contenedor, los archivos dentro de `/workspaces` se preservan, pero configuraciones en `$HOME` pueden perderse.
+- Si se abre un Codespace nuevo, el `postStartCommand` de `.devcontainer/devcontainer.json` debe reinstalar el MCP automaticamente.
+- Si se reconstruye el contenedor, los archivos dentro de `/workspaces` se preservan, pero configuraciones en `$HOME` pueden perderse; el bootstrap debe reponerlas al iniciar.
