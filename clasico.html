@@ -3,86 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sendas de Gracia · Front Clásico</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <meta http-equiv="refresh" content="0; url=index.html" />
+    <title>Sendas de Gracia · Redirección</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body class="classic-page">
-    <header class="topbar classic-topbar">
-      <div class="brand">
-        <div class="logo-mark" aria-hidden="true">✣</div>
-        <p class="brand-title">Sendas de Gracia</p>
-      </div>
-      <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
-      <nav class="nav-links" aria-label="Navegación principal">
-        <a href="#">Inicio</a>
-        <a href="#">Nosotros</a>
-        <a href="#">Predicaciones</a>
-        <a href="#">Ministerios</a>
-        <a href="#">Recursos</a>
-        <a href="#">Contáctanos</a>
-      </nav>
-    </header>
-
+  <body class="redirect-page">
     <main>
-      <section class="classic-hero">
-        <div class="classic-overlay"></div>
-        <div class="classic-content">
-          <h1>Impartimos fielmente<br />la verdad bíblica</h1>
-          <h2>PARA QUE LA CONOZCAN Y LA SIRVAN</h2>
-          <p>En adoración, en el ministerio y en el evangelismo.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#">Planifica tu visita</a>
-            <a class="btn btn-outline-light" href="#">Conócenos</a>
-          </div>
-        </div>
-
-        <div class="classic-features">
-          <article>
-            <h3>Preaching</h3>
-            <p>Predicación expositiva de la Palabra de Dios.</p>
-          </article>
-          <article>
-            <h3>Discipulado</h3>
-            <p>Formamos discípulos a través de la membresía y el estudio bíblico.</p>
-          </article>
-          <article>
-            <h3>Comunidad</h3>
-            <p>Somos una familia que se ama, se cuida y sirve junta.</p>
-          </article>
-          <article>
-            <h3>Misión</h3>
-            <p>Anunciamos el evangelio en nuestra ciudad y al mundo.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="classic-verse">
-        <p class="quote">"Firmes en Su Palabra."</p>
-        <p class="ref">2 Timoteo 2:15</p>
-      </section>
+      <h1>Sendas de Gracia</h1>
+      <p>La variante clásica fue reemplazada por el sitio restaurado.</p>
+      <a class="btn btn-primary" href="index.html">Ir al inicio</a>
     </main>
-  
-    <details class="front-mini-switcher">
-      <summary title="Cambiar front">•</summary>
-      <div class="front-mini-panel">
-        <a href="index.html">Inicio</a>
-        <a href="clasico.html">Clásico</a>
-        <a href="premium_2.html">Premium 2</a>
-        <a href="front_comunidad.html">Comunidad</a>
-      </div>
-    </details>
-  
-    <script>
-      document.querySelectorAll('.nav-toggle').forEach((btn)=>{
-        btn.addEventListener('click',()=>{
-          const topbar=btn.closest('.topbar');
-          const open=topbar.classList.toggle('menu-open');
-          btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        });
-      });
-    </script>
   </body>
 </html>
