@@ -22,10 +22,21 @@
       </a>
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
       <nav class="site-nav" aria-label="Navegación principal">
-        <a href="nosotros/">Nosotros</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">Nosotros</button>
+          <div class="nav-dropdown-menu">
+            <a href="nosotros/#distintivos">Distintivos</a>
+            <a href="recursos/declaracion-doctrinal/">Declaración doctrinal</a>
+          </div>
+        </div>
         <a href="predicaciones/">Predicaciones</a>
         <a href="ministerios/">Ministerios</a>
-        <a href="recursos/">Recursos</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">Recursos</button>
+          <div class="nav-dropdown-menu">
+            <a href="recursos/blog/">Blog</a>
+          </div>
+        </div>
         <a href="visitanos/">Visítanos</a>
       </nav>
       <a class="header-cta" href="visitanos/">Planifica tu visita</a>

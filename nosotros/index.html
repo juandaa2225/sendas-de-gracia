@@ -19,10 +19,21 @@
       </a>
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
       <nav class="site-nav" aria-label="Navegación principal">
-        <a aria-current="page" href="../nosotros/">Nosotros</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true" aria-current="page">Nosotros</button>
+          <div class="nav-dropdown-menu">
+            <a href="#distintivos">Distintivos</a>
+            <a href="../recursos/declaracion-doctrinal/">Declaración doctrinal</a>
+          </div>
+        </div>
         <a href="../predicaciones/">Predicaciones</a>
         <a href="../ministerios/">Ministerios</a>
-        <a href="../recursos/">Recursos</a>
+        <div class="nav-dropdown">
+          <button class="nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">Recursos</button>
+          <div class="nav-dropdown-menu">
+            <a href="../recursos/blog/">Blog</a>
+          </div>
+        </div>
         <a href="../visitanos/">Visítanos</a>
       </nav>
       <a class="header-cta" href="../visitanos/">Planifica tu visita</a>
@@ -40,7 +51,7 @@
         </div>
         <p>Sendas de Gracia busca cultivar una vida congregacional sencilla y profunda: predicación expositiva, discipulado, oración, comunión y misión. Nuestra confianza no está en técnicas ni apariencia, sino en el evangelio de Jesucristo.</p>
       </section>
-      <section class="section section-muted">
+      <section class="section section-muted" id="distintivos">
         <div class="card-grid three">
           <article class="info-card"><span class="card-number">01</span><h3>Adoración</h3><p>Nos reunimos para responder a Dios con reverencia, gratitud y obediencia.</p></article>
           <article class="info-card"><span class="card-number">02</span><h3>Ministerio</h3><p>Cada creyente es llamado a servir, cuidar y edificar a otros en amor.</p></article>
