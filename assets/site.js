@@ -1,5 +1,7 @@
 const header = document.querySelector(".site-header");
 const navToggle = document.querySelector(".nav-toggle");
+const siteNav = document.querySelector(".site-nav");
+const headerCta = document.querySelector(".header-cta");
 const dropdowns = document.querySelectorAll(".nav-dropdown");
 const assetBase = new URL(".", document.currentScript?.src || window.location.href);
 
@@ -8,12 +10,38 @@ const closeDropdown = (dropdown) => {
   dropdown.querySelector(".nav-dropdown-toggle")?.setAttribute("aria-expanded", "false");
 };
 
+const closeAllDropdowns = () => dropdowns.forEach(closeDropdown);
+
+const openMenu = () => {
+  if (!header || !navToggle) return;
+  header.classList.add("menu-open");
+  document.body.classList.add("menu-lock");
+  navToggle.setAttribute("aria-expanded", "true");
+  navToggle.setAttribute("aria-label", "Cerrar menú");
+  navToggle.textContent = "×";
+};
+
+const closeMenu = () => {
+  if (!header || !navToggle) return;
+  header.classList.remove("menu-open");
+  document.body.classList.remove("menu-lock");
+  navToggle.setAttribute("aria-expanded", "false");
+  navToggle.setAttribute("aria-label", "Abrir menú");
+  navToggle.textContent = "☰";
+  closeAllDropdowns();
+};
+
+const toggleMenu = () => {
+  if (!header) return;
+  if (header.classList.contains("menu-open")) {
+    closeMenu();
+  } else {
+    openMenu();
+  }
+};
+
 if (header && navToggle) {
-  navToggle.addEventListener("click", () => {
-    const isOpen = header.classList.toggle("menu-open");
-    navToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    if (!isOpen) dropdowns.forEach(closeDropdown);
-  });
+  navToggle.addEventListener("click", toggleMenu);
 }
 
 dropdowns.forEach((dropdown) => {
@@ -30,6 +58,11 @@ dropdowns.forEach((dropdown) => {
 });
 
 document.addEventListener("click", (event) => {
+  if (header?.classList.contains("menu-open")) {
+    const clickedInsideMenu = siteNav?.contains(event.target) || headerCta?.contains(event.target) || navToggle?.contains(event.target);
+    if (!clickedInsideMenu) closeMenu();
+  }
+
   dropdowns.forEach((dropdown) => {
     if (dropdown.contains(event.target)) return;
     closeDropdown(dropdown);
@@ -38,8 +71,56 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
-  dropdowns.forEach(closeDropdown);
+  closeMenu();
 });
+
+siteNav?.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", closeMenu);
+});
+
+headerCta?.addEventListener("click", closeMenu);
+
+window.addEventListener("resize", () => {
+  if (window.matchMedia("(min-width: 1081px)").matches) closeMenu();
+});
+
+let touchStartX = 0;
+let touchStartY = 0;
+let touchStartedAtRightEdge = false;
+let touchStartedInMenu = false;
+
+document.addEventListener(
+  "touchstart",
+  (event) => {
+    if (event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+    touchStartedAtRightEdge = window.innerWidth - touchStartX <= 24;
+    touchStartedInMenu = Boolean(siteNav?.contains(event.target));
+  },
+  { passive: true }
+);
+
+document.addEventListener(
+  "touchend",
+  (event) => {
+    if (!touchStartX || event.changedTouches.length !== 1) return;
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - touchStartX;
+    const deltaY = touch.clientY - touchStartY;
+    const isHorizontalSwipe = Math.abs(deltaX) > 56 && Math.abs(deltaX) > Math.abs(deltaY) * 1.4;
+
+    if (isHorizontalSwipe && deltaX < 0 && touchStartedAtRightEdge) openMenu();
+    if (isHorizontalSwipe && deltaX > 0 && header?.classList.contains("menu-open") && touchStartedInMenu) closeMenu();
+
+    touchStartX = 0;
+    touchStartY = 0;
+    touchStartedAtRightEdge = false;
+    touchStartedInMenu = false;
+  },
+  { passive: true }
+);
 
 const formatDate = (value) => {
   const date = new Date(value);
