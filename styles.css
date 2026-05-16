@@ -462,6 +462,11 @@ h2 {
   margin-bottom: 0;
 }
 
+.schedule-lines {
+  display: grid;
+  gap: 6px;
+}
+
 .icon-card img {
   margin-bottom: 20px;
 }
