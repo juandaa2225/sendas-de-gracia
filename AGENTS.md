@@ -9,7 +9,7 @@ Antes de editar este sitio, lee:
 
 Reglas rápidas:
 
-- Trabaja en ramas `feature/*` para activar deploy de GitHub Pages.
+- Trabaja en ramas `feature/*` para activar deploy de GitHub Pages. A medida que vas avanzando, por trazabilidad, haz commits atómicos.
 - No hagas push directo a `main`; usa una rama y PR, salvo instrucción explícita de emergencia.
 - No subas artefactos de Playwright ni capturas locales.
 - Guarda las capturas PNG de Playwright en `.playwright-mcp/screenshots/` con numeración incremental (`001-...`, `002-...`).
