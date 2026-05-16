@@ -19,6 +19,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -27,6 +28,7 @@ body {
   color: var(--graphite);
   font-family: Inter, Arial, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 body.menu-lock {
@@ -624,6 +626,35 @@ h2 {
   gap: 18px;
 }
 
+.doctrine-list {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  gap: 14px;
+}
+
+.doctrine-list details {
+  border: 1px solid var(--border);
+  background: var(--ivory-soft);
+  padding: 0 22px;
+}
+
+.doctrine-list summary {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  color: var(--forest);
+  cursor: pointer;
+  font-family: Cinzel, serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.doctrine-list p {
+  margin-bottom: 22px;
+}
+
 .resource-list span {
   display: block;
   margin-bottom: 10px;
@@ -729,7 +760,7 @@ h2 {
     top: 0;
     right: 0;
     z-index: 32;
-    display: grid;
+    display: none;
     align-content: start;
     gap: 10px;
     width: min(78vw, 340px);
@@ -751,6 +782,7 @@ h2 {
   }
 
   .site-header.menu-open .site-nav {
+    display: grid;
     opacity: 1;
     transform: translateX(0);
     visibility: visible;
