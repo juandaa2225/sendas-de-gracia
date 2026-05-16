@@ -396,6 +396,13 @@ h2 {
   margin: 0 auto 30px;
 }
 
+.section-lede {
+  max-width: 760px;
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 18px;
+}
+
 .row-heading {
   display: flex;
   justify-content: space-between;
@@ -467,6 +474,77 @@ h2 {
 
 .icon-card img {
   margin-bottom: 20px;
+}
+
+.flip-card {
+  min-height: 238px;
+  padding: 0;
+  perspective: 1200px;
+}
+
+.flip-card:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.flip-card-inner {
+  position: relative;
+  min-height: 238px;
+  transform-style: preserve-3d;
+  transition: transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.flip-card:hover .flip-card-inner,
+.flip-card:focus-within .flip-card-inner,
+.flip-card:focus-visible .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-face {
+  min-height: 238px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 24px;
+  backface-visibility: hidden;
+  background: var(--ivory-soft);
+}
+
+.section-muted .flip-card-face {
+  background: var(--ivory);
+}
+
+.flip-card-front {
+  position: relative;
+}
+
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  transform: rotateY(180deg);
+}
+
+.flip-card-front img {
+  margin-bottom: 28px;
+}
+
+.flip-card-front h3,
+.flip-card-back h3 {
+  margin-bottom: 12px;
+}
+
+.flip-hint {
+  margin-top: auto;
+  color: #8e713d;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.flip-card-back .card-link {
+  margin-top: auto;
 }
 
 .sermon-feature {
@@ -567,6 +645,71 @@ h2 {
   font-size: 18px;
 }
 
+.media-split,
+.doctrine-overview,
+.visit-welcome {
+  max-width: var(--max);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.95fr) minmax(0, 0.85fr);
+  gap: clamp(28px, 6vw, 76px);
+  align-items: center;
+}
+
+.media-split.reverse {
+  grid-template-columns: minmax(0, 0.85fr) minmax(320px, 0.95fr);
+}
+
+.media-split.reverse .media-panel {
+  order: 2;
+}
+
+.media-split.reverse .media-copy {
+  order: 1;
+}
+
+.media-panel {
+  margin: 0;
+  border: 1px solid var(--border);
+  background: var(--stone);
+  overflow: hidden;
+}
+
+.media-panel img {
+  width: 100%;
+  height: clamp(280px, 34vw, 520px);
+  object-fit: cover;
+}
+
+.media-panel figcaption {
+  padding: 10px 14px;
+  background: var(--ivory-soft);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.media-copy,
+.doctrine-summary {
+  max-width: 620px;
+}
+
+.media-copy h2,
+.doctrine-summary h2 {
+  margin-bottom: 16px;
+  font-size: clamp(34px, 4vw, 56px);
+}
+
+.media-copy p,
+.doctrine-summary p {
+  margin-bottom: 0;
+  font-size: 18px;
+}
+
+.media-copy .btn {
+  margin-top: 24px;
+}
+
 .mini-list {
   display: grid;
   gap: 12px;
@@ -630,6 +773,7 @@ h2 {
 }
 
 .doctrine-list {
+  counter-reset: doctrine;
   max-width: var(--max);
   margin: 0 auto;
   display: grid;
@@ -637,6 +781,7 @@ h2 {
 }
 
 .doctrine-list details {
+  counter-increment: doctrine;
   border: 1px solid var(--border);
   background: var(--ivory-soft);
   padding: 0 22px;
@@ -646,6 +791,7 @@ h2 {
   min-height: 58px;
   display: flex;
   align-items: center;
+  gap: 14px;
   color: var(--forest);
   cursor: pointer;
   font-family: Cinzel, serif;
@@ -654,8 +800,17 @@ h2 {
   line-height: 1.2;
 }
 
+.doctrine-list summary::before {
+  content: counter(doctrine, decimal-leading-zero);
+  color: var(--gold);
+  font-family: Cinzel, serif;
+  font-size: 16px;
+}
+
 .doctrine-list p {
   margin-bottom: 22px;
+  padding-left: 46px;
+  max-width: 920px;
 }
 
 .resource-list span {
@@ -688,6 +843,144 @@ h2 {
   border-left: 3px solid var(--gold);
   background: var(--ivory-soft);
   padding: 22px 24px;
+}
+
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 560ms ease,
+    transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+.motion-ready .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.distinctive-card {
+  position: relative;
+  overflow: hidden;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.distinctive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 3px solid transparent;
+  pointer-events: none;
+  transition: border-color 180ms ease;
+}
+
+.distinctive-card:hover,
+.distinctive-card:focus-within,
+.distinctive-card[open] {
+  border-color: rgba(194, 164, 107, 0.58);
+  box-shadow: 0 16px 32px rgba(16, 37, 27, 0.09);
+  transform: translateY(-2px);
+}
+
+.distinctive-card:hover::before,
+.distinctive-card:focus-within::before,
+.distinctive-card[open]::before {
+  border-color: var(--gold);
+}
+
+.distinctive-card summary {
+  position: relative;
+  display: block;
+  padding-right: 34px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.distinctive-card summary::-webkit-details-marker {
+  display: none;
+}
+
+details.distinctive-card summary::after {
+  content: "+";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(194, 164, 107, 0.5);
+  color: var(--forest);
+  font-family: Inter, Arial, sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+details.distinctive-card[open] summary::after {
+  content: "−";
+}
+
+.distinctive-card .card-number {
+  margin-bottom: 20px;
+}
+
+.distinctive-card .card-detail {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+}
+
+.distinctive-card .card-detail p + p {
+  color: var(--muted);
+}
+
+.detail-card {
+  display: grid;
+  align-content: start;
+}
+
+.detail-card .card-number {
+  margin-bottom: 20px;
+}
+
+.detail-card > p {
+  color: var(--graphite);
+  font-size: 17px;
+}
+
+.card-link {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  color: var(--forest);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.card-link::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: 8px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 160ms ease;
+}
+
+.card-link:hover::after,
+.card-link:focus-visible::after {
+  transform: translateX(3px) rotate(45deg);
 }
 
 .site-footer {
@@ -872,9 +1165,18 @@ h2 {
   .sermon-feature,
   .intro-band,
   .split-section,
+  .media-split,
+  .media-split.reverse,
+  .doctrine-overview,
+  .visit-welcome,
   .visit-cta,
   .visit-layout {
     grid-template-columns: 1fr;
+  }
+
+  .media-split.reverse .media-panel,
+  .media-split.reverse .media-copy {
+    order: initial;
   }
 
   .hero {
@@ -968,9 +1270,93 @@ h2 {
   .intro-band h2,
   .section-heading h2,
   .split-section h2,
+  .media-copy h2,
+  .doctrine-summary h2,
   .sermon-feature h2,
   .visit-cta h2,
   .page-hero h1 {
     font-size: clamp(34px, 10vw, 48px);
+  }
+
+  .media-panel figcaption {
+    font-size: 11px;
+  }
+
+  .flip-card,
+  .flip-card-inner,
+  .flip-card-face {
+    min-height: 0;
+  }
+
+  .flip-card {
+    perspective: none;
+  }
+
+  .flip-card:hover .flip-card-inner,
+  .flip-card:focus-within .flip-card-inner,
+  .flip-card:focus-visible .flip-card-inner {
+    transform: none;
+  }
+
+  .flip-card-inner {
+    display: grid;
+    transform: none;
+    transition: none;
+  }
+
+  .flip-card-front {
+    display: none;
+  }
+
+  .flip-card-back {
+    position: static;
+    transform: none;
+  }
+
+  .media-panel img {
+    height: 320px;
+  }
+
+  .doctrine-list details {
+    padding: 0 16px;
+  }
+
+  .doctrine-list summary {
+    align-items: flex-start;
+    padding: 16px 0;
+    font-size: 18px;
+  }
+
+  .doctrine-list p {
+    padding-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .motion-ready .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  .flip-card-inner {
+    transition: none;
   }
 }

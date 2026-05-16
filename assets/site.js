@@ -6,6 +6,8 @@ const dropdowns = document.querySelectorAll(".nav-dropdown");
 const assetBase = new URL(".", document.currentScript?.src || window.location.href);
 let menuReturnFocus = null;
 const mobileMenuQuery = window.matchMedia("(max-width: 1080px)");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+let revealObserver = null;
 
 const syncMenuVisibility = () => {
   const shouldHide = mobileMenuQuery.matches && !header?.classList.contains("menu-open");
@@ -65,11 +67,11 @@ dropdowns.forEach((dropdown) => {
   toggle.addEventListener("click", (event) => {
     const isMenuLink = toggle.matches("a[href]");
     const isMobileMenuLink = isMenuLink && mobileMenuQuery.matches && header?.classList.contains("menu-open");
+    const isDesktopMenuLink = isMenuLink && !isMobileMenuLink;
     const isOpen = dropdown.classList.contains("open");
 
-    if (isMenuLink && !isMobileMenuLink) return;
-    if (isMobileMenuLink && isOpen) return;
-    if (isMobileMenuLink) {
+    if ((isDesktopMenuLink || isMobileMenuLink) && isOpen) return;
+    if (isMenuLink) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -110,6 +112,52 @@ window.addEventListener("resize", () => {
   if (!mobileMenuQuery.matches) closeMenu();
   syncMenuVisibility();
 });
+
+const revealSelectors = [
+  ".intro-band",
+  ".page-hero",
+  ".section-heading",
+  ".media-panel",
+  ".media-copy",
+  ".doctrine-summary",
+  ".info-card",
+  ".icon-card",
+  ".ministry-card",
+  ".resource-list article",
+  ".doctrine-list details",
+  ".visit-panel",
+  ".visit-details article",
+  ".sermon-feature-copy",
+  ".sermon-card",
+  ".visit-cta > *",
+];
+
+const initReveals = (root = document) => {
+  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+    document.documentElement.classList.remove("motion-ready");
+    return;
+  }
+  document.documentElement.classList.add("motion-ready");
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+    );
+  }
+
+  root.querySelectorAll(revealSelectors.join(",")).forEach((element, index) => {
+    if (element.classList.contains("reveal")) return;
+    element.classList.add("reveal");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+    revealObserver.observe(element);
+  });
+};
 
 let touchStartX = 0;
 let touchStartY = 0;
@@ -202,6 +250,7 @@ const renderSermons = (container, sermons) => {
       `;
     })
     .join("");
+  initReveals(container);
 };
 
 document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
@@ -215,3 +264,5 @@ document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
     renderSermons(container, []);
   }
 });
+
+initReveals();
