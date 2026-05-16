@@ -4,7 +4,7 @@ Antes de editar este sitio, lee:
 
 1. `docs/design-guide.md` para dirección visual, paleta, tono y estructura.
 2. `docs/codex-setup.md` para setup de Codespaces, MCP y Playwright.
-3. `docs/agent-workflow.md` si existe, para el flujo de iteracion con agentes.
+3. `docs/agent-workflow.md` si existe, para el flujo de iteración con agentes.
 
 Reglas rápidas:
 
@@ -13,6 +13,8 @@ Reglas rápidas:
 - No subas artefactos de Playwright ni capturas locales.
 - Guarda las capturas PNG de Playwright en `.playwright-mcp/screenshots/` con numeración incremental (`001-...`, `002-...`).
 - Valida cambios visuales con Playwright en desktop y móvil cuando afecten UI.
+- Mantén las páginas públicas en rutas con carpeta (`nosotros/`, `predicaciones/`, etc.). Los `*.html` de raíz son redirects de compatibilidad.
+- No agregues laboratorios, prototipos o variantes visuales al repo si no van a producción; documenta solo lo que ayude al sitio actual.
 - Mantén la configuración MCP esperada en `.devcontainer/codex-config.toml`; el `postStartCommand` de Codespaces debe registrar Playwright si falta en `~/.codex/config.toml`.
 - Mantén el sitio sencillo, reverente, claro y consistente con la guía de diseño.
 - Escribe el contenido público en español con tildes, ñ y signos correctos, salvo identificadores técnicos, rutas, comandos y URLs.

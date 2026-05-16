@@ -1,6 +1,6 @@
 # Sendas de Gracia
 
-Sitio web estático para la iglesia Sendas de Gracia. El proyecto publica una experiencia multipágina sencilla, pastoral y consistente con la guía visual. GitHub Pages se actualiza cuando se publica `main`, `feature/**` o `hotfix/**`, y también refresca diariamente el feed de predicaciones desde YouTube.
+Sitio web estático para la iglesia Sendas de Gracia. El repo busca mantenerse sencillo: páginas claras, contenido en español y una estructura sin ruido. GitHub Pages publica `main`, `feature/**` y `hotfix/**`, y refresca diariamente el feed de predicaciones desde YouTube.
 
 ## Página publicada
 
@@ -9,26 +9,20 @@ Sitio web estático para la iglesia Sendas de Gracia. El proyecto publica una ex
 ## Estructura
 
 - `index.html`: portada principal.
-- `nosotros/`: identidad, convicciones y vida comunitaria.
-- `predicaciones/`: archivo reciente conectado al canal actual de YouTube.
-- `ministerios/`: ministerios y espacios de servicio.
-- `recursos/`: materiales y enlaces útiles.
+- `nosotros/`, `predicaciones/`, `ministerios/`, `recursos/`, `visitanos/`: páginas públicas principales.
 - `recursos/blog/`: índice preparado para artículos futuros.
-- `recursos/declaracion-doctrinal/`: placeholder de declaración doctrinal por publicar.
-- `visitanos/`: información para visitantes.
-- `*.html` heredados: redirects de compatibilidad hacia las rutas con carpeta.
+- `recursos/declaracion-doctrinal/`: declaración doctrinal por publicar.
+- `*.html` heredados: redirects de compatibilidad hacia las rutas con carpeta. Los enlaces nuevos deben usar `seccion/`.
 - `styles.css`: estilos compartidos.
 - `assets/site.js`: navegación móvil y render de predicaciones.
 - `assets/data/sermons.json`: predicaciones recientes generadas desde YouTube RSS.
-- `assets/icons/`: iconografía y logos.
-- `assets/images/`: fotografías e imágenes de fondo.
+- `assets/icons/` y `assets/images/`: recursos visuales usados por el sitio.
 - `scripts/update-youtube-feed.mjs`: actualiza el JSON de predicaciones.
-- `docs/design-guide.md`: guía de diseño y requisitos visuales.
-- `docs/codex-setup.md`: notas para restaurar MCPs y setup de Codex.
+- `docs/`: guía de diseño y notas de setup para agentes.
 
 ## Guía de diseño
 
-La dirección visual del sitio está documentada en [docs/design-guide.md](docs/design-guide.md). Esa guía define paleta, proporción, estructura de home, hero, tipografías, responsive y criterios de hacer/evitar.
+La dirección visual vive en [docs/design-guide.md](docs/design-guide.md). Úsala como fuente de verdad para paleta, tono, estructura, tipografías y criterios visuales.
 
 ## Desarrollo local
 
