@@ -59,6 +59,7 @@ if (header && navToggle) {
 }
 
 dropdowns.forEach((dropdown) => {
+  if (dropdown.classList.contains("nav-dropdown-link")) return;
   const toggle = dropdown.querySelector(".nav-dropdown-toggle");
   if (!toggle) return;
 
