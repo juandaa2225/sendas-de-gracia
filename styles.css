@@ -773,44 +773,170 @@ h2 {
 }
 
 .doctrine-list {
-  counter-reset: doctrine;
-  max-width: var(--max);
+  max-width: min(1120px, calc(100vw - 28px));
   margin: 0 auto;
   display: grid;
-  gap: 14px;
+  gap: 18px;
 }
 
-.doctrine-list details {
-  counter-increment: doctrine;
+.doctrine-track {
+  display: grid;
+  gap: 18px;
+}
+
+.doctrine-card {
+  position: relative;
+  display: grid;
+  align-content: start;
   border: 1px solid var(--border);
   background: var(--ivory-soft);
-  padding: 0 22px;
+  padding: 24px;
+  overflow: hidden;
+  transition:
+    opacity 220ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
-.doctrine-list summary {
-  min-height: 58px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  color: var(--forest);
-  cursor: pointer;
+.doctrine-card > * {
+  transition:
+    opacity 220ms ease,
+    transform 260ms ease;
+}
+
+.doctrine-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-top: 3px solid transparent;
+  pointer-events: none;
+  transition: border-color 180ms ease;
+}
+
+.doctrine-card:hover,
+.doctrine-card:focus-within {
+  border-color: rgba(194, 164, 107, 0.58);
+  box-shadow: 0 16px 32px rgba(16, 37, 27, 0.09);
+  transform: translateY(-2px);
+}
+
+.doctrine-card:hover::before,
+.doctrine-card:focus-within::before {
+  border-color: var(--gold);
+}
+
+.doctrine-card h2 {
+  margin-bottom: 14px;
   font-family: Cinzel, serif;
-  font-size: 20px;
-  font-weight: 700;
+  font-size: 22px;
   line-height: 1.2;
 }
 
-.doctrine-list summary::before {
-  content: counter(doctrine, decimal-leading-zero);
-  color: var(--gold);
-  font-family: Cinzel, serif;
-  font-size: 16px;
+.doctrine-card p {
+  margin-bottom: 0;
+  font-size: 17px;
 }
 
-.doctrine-list p {
-  margin-bottom: 22px;
-  padding-left: 46px;
-  max-width: 920px;
+.doctrine-carousel.is-carousel-ready {
+  justify-items: center;
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-track {
+  width: 100%;
+  display: flex;
+  gap: 22px;
+  align-items: stretch;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px max(24px, calc((100% - 820px) / 2)) 18px;
+  scroll-padding-inline: max(24px, calc((100% - 820px) / 2));
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-track::-webkit-scrollbar {
+  display: none;
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-card {
+  flex: 0 0 min(820px, calc(100vw - 72px));
+  min-height: 300px;
+  padding: 38px;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  opacity: 0.42;
+  transform: scale(0.94);
+  cursor: pointer;
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-card > * {
+  opacity: 0.55;
+  transform: translateY(8px);
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-card.is-active {
+  opacity: 1;
+  border-color: rgba(194, 164, 107, 0.62);
+  background: var(--ivory-soft);
+  box-shadow: 0 20px 44px rgba(16, 37, 27, 0.1);
+  transform: scale(1);
+  cursor: default;
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-card.is-active::before {
+  border-color: var(--gold);
+}
+
+.doctrine-carousel.is-carousel-ready .doctrine-card.is-active > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.doctrine-controls {
+  display: grid;
+  grid-template-columns: 52px minmax(120px, auto) 52px;
+  gap: 16px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.doctrine-controls[hidden] {
+  display: none;
+}
+
+.carousel-button {
+  width: 52px;
+  height: 52px;
+  border: 1px solid var(--border-strong);
+  background: var(--ivory-soft);
+  color: var(--forest);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    transform 180ms ease;
+}
+
+.carousel-button:hover,
+.carousel-button:focus-visible {
+  border-color: var(--gold);
+  background: #fbf8ef;
+  transform: translateY(-1px);
+}
+
+.doctrine-progress {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .resource-list span {
@@ -1317,18 +1443,28 @@ details.distinctive-card[open] summary::after {
     height: 320px;
   }
 
-  .doctrine-list details {
-    padding: 0 16px;
+  .doctrine-carousel.is-carousel-ready .doctrine-card {
+    flex-basis: calc(100vw - 98px);
+    min-height: 0;
+    padding: 24px;
   }
 
-  .doctrine-list summary {
-    align-items: flex-start;
-    padding: 16px 0;
-    font-size: 18px;
+  .doctrine-card h2 {
+    font-size: 20px;
   }
 
-  .doctrine-list p {
-    padding-left: 0;
+  .doctrine-card p {
+    font-size: 16px;
+  }
+
+  .doctrine-controls {
+    grid-template-columns: 48px minmax(96px, auto) 48px;
+    gap: 10px;
+  }
+
+  .carousel-button {
+    width: 48px;
+    height: 48px;
   }
 }
 

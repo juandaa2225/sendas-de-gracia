@@ -124,7 +124,7 @@ const revealSelectors = [
   ".icon-card",
   ".ministry-card",
   ".resource-list article",
-  ".doctrine-list details",
+  ".doctrine-card",
   ".visit-panel",
   ".visit-details article",
   ".sermon-feature-copy",
@@ -252,6 +252,77 @@ const renderSermons = (container, sermons) => {
     .join("");
   initReveals(container);
 };
+
+const initDoctrineCarousel = (carousel) => {
+  const track = carousel.querySelector("[data-doctrine-track]");
+  const cards = Array.from(carousel.querySelectorAll(".doctrine-card"));
+  const controls = carousel.querySelector(".doctrine-controls");
+  const prevButton = carousel.querySelector("[data-doctrine-prev]");
+  const nextButton = carousel.querySelector("[data-doctrine-next]");
+  const currentLabel = carousel.querySelector("[data-doctrine-current]");
+  const totalLabel = carousel.querySelector("[data-doctrine-total]");
+
+  if (!track || !cards.length || !controls || !prevButton || !nextButton || !currentLabel || !totalLabel) return;
+
+  let activeIndex = 0;
+  let scrollFrame = 0;
+  totalLabel.textContent = String(cards.length).padStart(2, "0");
+  controls.hidden = false;
+  carousel.classList.add("is-carousel-ready");
+
+  const setActive = (nextIndex) => {
+    activeIndex = (nextIndex + cards.length) % cards.length;
+    cards.forEach((card, index) => {
+      const isActive = index === activeIndex;
+      card.classList.toggle("is-active", isActive);
+      card.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+    currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
+  };
+
+  const getNearestCardIndex = () => {
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    return cards.reduce(
+      (nearest, card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(cardCenter - trackCenter);
+        return distance < nearest.distance ? { index, distance } : nearest;
+      },
+      { index: activeIndex, distance: Number.POSITIVE_INFINITY }
+    ).index;
+  };
+
+  const goTo = (nextIndex) => {
+    const normalizedIndex = (nextIndex + cards.length) % cards.length;
+    const card = cards[normalizedIndex];
+    const left = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    track.scrollTo({
+      left,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
+    setActive(normalizedIndex);
+  };
+
+  prevButton.addEventListener("click", () => goTo(activeIndex - 1));
+  nextButton.addEventListener("click", () => goTo(activeIndex + 1));
+  cards.forEach((card, index) => {
+    card.addEventListener("click", () => {
+      if (index !== activeIndex) goTo(index);
+    });
+  });
+  track.addEventListener("scroll", () => {
+    window.cancelAnimationFrame(scrollFrame);
+    scrollFrame = window.requestAnimationFrame(() => setActive(getNearestCardIndex()));
+  });
+  track.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") goTo(activeIndex - 1);
+    if (event.key === "ArrowRight") goTo(activeIndex + 1);
+  });
+
+  setActive(0);
+};
+
+document.querySelectorAll("[data-doctrine-carousel]").forEach(initDoctrineCarousel);
 
 document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
   try {
