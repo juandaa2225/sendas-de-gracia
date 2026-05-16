@@ -59,16 +59,27 @@ if (header && navToggle) {
 }
 
 dropdowns.forEach((dropdown) => {
-  if (dropdown.classList.contains("nav-dropdown-link")) return;
   const toggle = dropdown.querySelector(".nav-dropdown-toggle");
   if (!toggle) return;
 
-  toggle.addEventListener("click", () => {
+  toggle.addEventListener("click", (event) => {
+    const isMenuLink = toggle.matches("a[href]");
+    const isMobileMenuLink = isMenuLink && mobileMenuQuery.matches && header?.classList.contains("menu-open");
+    const isOpen = dropdown.classList.contains("open");
+
+    if (isMenuLink && !isMobileMenuLink) return;
+    if (isMobileMenuLink && isOpen) return;
+    if (isMobileMenuLink) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    }
+
     dropdowns.forEach((item) => {
       if (item !== dropdown) closeDropdown(item);
     });
-    const isOpen = dropdown.classList.toggle("open");
-    toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    const shouldOpen = !isOpen;
+    dropdown.classList.toggle("open", shouldOpen);
+    toggle.setAttribute("aria-expanded", shouldOpen ? "true" : "false");
   });
 });
 
