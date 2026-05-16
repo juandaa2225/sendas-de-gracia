@@ -29,7 +29,6 @@ const openMenu = () => {
   navToggle.setAttribute("aria-expanded", "true");
   navToggle.setAttribute("aria-label", "Cerrar menú");
   navToggle.textContent = "×";
-  siteNav?.querySelector("a, button")?.focus();
 };
 
 const closeMenu = ({ restoreFocus = false } = {}) => {
