@@ -4,6 +4,14 @@ const siteNav = document.querySelector(".site-nav");
 const headerCta = document.querySelector(".header-cta");
 const dropdowns = document.querySelectorAll(".nav-dropdown");
 const assetBase = new URL(".", document.currentScript?.src || window.location.href);
+let menuReturnFocus = null;
+const mobileMenuQuery = window.matchMedia("(max-width: 1080px)");
+
+const syncMenuVisibility = () => {
+  const shouldHide = mobileMenuQuery.matches && !header?.classList.contains("menu-open");
+  siteNav?.setAttribute("aria-hidden", shouldHide ? "true" : "false");
+  headerCta?.setAttribute("aria-hidden", shouldHide ? "true" : "false");
+};
 
 const closeDropdown = (dropdown) => {
   dropdown.classList.remove("open");
@@ -14,21 +22,26 @@ const closeAllDropdowns = () => dropdowns.forEach(closeDropdown);
 
 const openMenu = () => {
   if (!header || !navToggle) return;
+  menuReturnFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
   header.classList.add("menu-open");
   document.body.classList.add("menu-lock");
+  syncMenuVisibility();
   navToggle.setAttribute("aria-expanded", "true");
   navToggle.setAttribute("aria-label", "Cerrar menú");
   navToggle.textContent = "×";
 };
 
-const closeMenu = () => {
+const closeMenu = ({ restoreFocus = false } = {}) => {
   if (!header || !navToggle) return;
   header.classList.remove("menu-open");
   document.body.classList.remove("menu-lock");
+  syncMenuVisibility();
   navToggle.setAttribute("aria-expanded", "false");
   navToggle.setAttribute("aria-label", "Abrir menú");
   navToggle.textContent = "☰";
   closeAllDropdowns();
+  if (restoreFocus) menuReturnFocus?.focus();
+  menuReturnFocus = null;
 };
 
 const toggleMenu = () => {
@@ -41,6 +54,7 @@ const toggleMenu = () => {
 };
 
 if (header && navToggle) {
+  syncMenuVisibility();
   navToggle.addEventListener("click", toggleMenu);
 }
 
@@ -71,7 +85,7 @@ document.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
-  closeMenu();
+  closeMenu({ restoreFocus: true });
 });
 
 siteNav?.querySelectorAll("a").forEach((link) => {
@@ -81,7 +95,8 @@ siteNav?.querySelectorAll("a").forEach((link) => {
 headerCta?.addEventListener("click", closeMenu);
 
 window.addEventListener("resize", () => {
-  if (window.matchMedia("(min-width: 1081px)").matches) closeMenu();
+  if (!mobileMenuQuery.matches) closeMenu();
+  syncMenuVisibility();
 });
 
 let touchStartX = 0;
