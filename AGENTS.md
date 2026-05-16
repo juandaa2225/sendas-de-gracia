@@ -13,7 +13,7 @@ Reglas rápidas:
 - No subas artefactos de Playwright ni capturas locales.
 - Guarda las capturas PNG de Playwright en `.playwright-mcp/screenshots/` con numeración incremental (`001-...`, `002-...`).
 - Valida cambios visuales con Playwright en desktop y móvil cuando afecten UI.
-- Mantén las páginas públicas en rutas con carpeta (`nosotros/`, `predicaciones/`, etc.). Los `*.html` de raíz son redirects de compatibilidad.
+- Mantén las páginas públicas en rutas con carpeta (`nosotros/`, `predicaciones/`, etc.); evita duplicarlas como `*.html` en la raíz.
 - No agregues laboratorios, prototipos o variantes visuales al repo si no van a producción; documenta solo lo que ayude al sitio actual.
 - Mantén la configuración MCP esperada en `.devcontainer/codex-config.toml`; el `postStartCommand` de Codespaces debe registrar Playwright si falta en `~/.codex/config.toml`.
 - Mantén el sitio sencillo, reverente, claro y consistente con la guía de diseño.

@@ -12,7 +12,6 @@ Sitio web estático para la iglesia Sendas de Gracia. El repo busca mantenerse s
 - `nosotros/`, `predicaciones/`, `ministerios/`, `recursos/`, `visitanos/`: páginas públicas principales.
 - `recursos/blog/`: índice preparado para artículos futuros.
 - `recursos/declaracion-doctrinal/`: declaración doctrinal por publicar.
-- `*.html` heredados: redirects de compatibilidad hacia las rutas con carpeta. Los enlaces nuevos deben usar `seccion/`.
 - `styles.css`: estilos compartidos.
 - `assets/site.js`: navegación móvil y render de predicaciones.
 - `assets/data/sermons.json`: predicaciones recientes generadas desde YouTube RSS.
