@@ -769,11 +769,11 @@ h2 {
 
   .site-header.menu-open .site-nav > a,
   .site-header.menu-open .nav-dropdown-toggle {
-    min-height: 52px;
+    min-height: 48px;
     display: flex;
     align-items: center;
     padding: 7px 0;
-    font-size: 18px;
+    font-size: 15px;
     letter-spacing: 0.08em;
     line-height: 1.2;
   }
@@ -800,10 +800,10 @@ h2 {
   }
 
   .site-header.menu-open .nav-dropdown-menu a {
-    min-height: 46px;
+    min-height: 44px;
     padding: 9px 0;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 12px;
   }
 
   .site-header.menu-open .nav-dropdown.open .nav-dropdown-menu {
