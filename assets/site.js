@@ -6,6 +6,8 @@ const dropdowns = document.querySelectorAll(".nav-dropdown");
 const assetBase = new URL(".", document.currentScript?.src || window.location.href);
 let menuReturnFocus = null;
 const mobileMenuQuery = window.matchMedia("(max-width: 1080px)");
+const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+let revealObserver = null;
 
 const syncMenuVisibility = () => {
   const shouldHide = mobileMenuQuery.matches && !header?.classList.contains("menu-open");
@@ -65,11 +67,11 @@ dropdowns.forEach((dropdown) => {
   toggle.addEventListener("click", (event) => {
     const isMenuLink = toggle.matches("a[href]");
     const isMobileMenuLink = isMenuLink && mobileMenuQuery.matches && header?.classList.contains("menu-open");
+    const isDesktopMenuLink = isMenuLink && !isMobileMenuLink;
     const isOpen = dropdown.classList.contains("open");
 
-    if (isMenuLink && !isMobileMenuLink) return;
-    if (isMobileMenuLink && isOpen) return;
-    if (isMobileMenuLink) {
+    if ((isDesktopMenuLink || isMobileMenuLink) && isOpen) return;
+    if (isMenuLink) {
       event.preventDefault();
       event.stopImmediatePropagation();
     }
@@ -110,6 +112,52 @@ window.addEventListener("resize", () => {
   if (!mobileMenuQuery.matches) closeMenu();
   syncMenuVisibility();
 });
+
+const revealSelectors = [
+  ".intro-band",
+  ".page-hero",
+  ".section-heading",
+  ".media-panel",
+  ".media-copy",
+  ".doctrine-summary",
+  ".info-card",
+  ".icon-card",
+  ".ministry-card",
+  ".resource-list article",
+  ".doctrine-card",
+  ".visit-panel",
+  ".visit-details article",
+  ".sermon-feature-copy",
+  ".sermon-card",
+  ".visit-cta > *",
+];
+
+const initReveals = (root = document) => {
+  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+    document.documentElement.classList.remove("motion-ready");
+    return;
+  }
+  document.documentElement.classList.add("motion-ready");
+  if (!revealObserver) {
+    revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("is-visible");
+          revealObserver.unobserve(entry.target);
+        });
+      },
+      { rootMargin: "0px 0px -10% 0px", threshold: 0.12 }
+    );
+  }
+
+  root.querySelectorAll(revealSelectors.join(",")).forEach((element, index) => {
+    if (element.classList.contains("reveal")) return;
+    element.classList.add("reveal");
+    element.style.setProperty("--reveal-delay", `${Math.min(index % 6, 5) * 55}ms`);
+    revealObserver.observe(element);
+  });
+};
 
 let touchStartX = 0;
 let touchStartY = 0;
@@ -202,7 +250,79 @@ const renderSermons = (container, sermons) => {
       `;
     })
     .join("");
+  initReveals(container);
 };
+
+const initDoctrineCarousel = (carousel) => {
+  const track = carousel.querySelector("[data-doctrine-track]");
+  const cards = Array.from(carousel.querySelectorAll(".doctrine-card"));
+  const controls = carousel.querySelector(".doctrine-controls");
+  const prevButton = carousel.querySelector("[data-doctrine-prev]");
+  const nextButton = carousel.querySelector("[data-doctrine-next]");
+  const currentLabel = carousel.querySelector("[data-doctrine-current]");
+  const totalLabel = carousel.querySelector("[data-doctrine-total]");
+
+  if (!track || !cards.length || !controls || !prevButton || !nextButton || !currentLabel || !totalLabel) return;
+
+  let activeIndex = 0;
+  let scrollFrame = 0;
+  totalLabel.textContent = String(cards.length).padStart(2, "0");
+  controls.hidden = false;
+  carousel.classList.add("is-carousel-ready");
+
+  const setActive = (nextIndex) => {
+    activeIndex = (nextIndex + cards.length) % cards.length;
+    cards.forEach((card, index) => {
+      const isActive = index === activeIndex;
+      card.classList.toggle("is-active", isActive);
+      card.setAttribute("aria-current", isActive ? "true" : "false");
+    });
+    currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
+  };
+
+  const getNearestCardIndex = () => {
+    const trackCenter = track.scrollLeft + track.clientWidth / 2;
+    return cards.reduce(
+      (nearest, card, index) => {
+        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+        const distance = Math.abs(cardCenter - trackCenter);
+        return distance < nearest.distance ? { index, distance } : nearest;
+      },
+      { index: activeIndex, distance: Number.POSITIVE_INFINITY }
+    ).index;
+  };
+
+  const goTo = (nextIndex) => {
+    const normalizedIndex = (nextIndex + cards.length) % cards.length;
+    const card = cards[normalizedIndex];
+    const left = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
+    track.scrollTo({
+      left,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
+    setActive(normalizedIndex);
+  };
+
+  prevButton.addEventListener("click", () => goTo(activeIndex - 1));
+  nextButton.addEventListener("click", () => goTo(activeIndex + 1));
+  cards.forEach((card, index) => {
+    card.addEventListener("click", () => {
+      if (index !== activeIndex) goTo(index);
+    });
+  });
+  track.addEventListener("scroll", () => {
+    window.cancelAnimationFrame(scrollFrame);
+    scrollFrame = window.requestAnimationFrame(() => setActive(getNearestCardIndex()));
+  });
+  track.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowLeft") goTo(activeIndex - 1);
+    if (event.key === "ArrowRight") goTo(activeIndex + 1);
+  });
+
+  setActive(0);
+};
+
+document.querySelectorAll("[data-doctrine-carousel]").forEach(initDoctrineCarousel);
 
 document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
   try {
@@ -215,3 +335,5 @@ document.querySelectorAll("[data-sermons-list]").forEach(async (container) => {
     renderSermons(container, []);
   }
 });
+
+initReveals();
