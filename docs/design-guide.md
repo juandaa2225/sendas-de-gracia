@@ -12,7 +12,7 @@ La verdad bíblica al centro, la gracia como camino y la iglesia visible como co
 
 | Color | Uso | Hex |
 | --- | --- | --- |
-| Verde bosque | Institucional, navegación, footer, títulos fuertes | `#254117` |
+| Verde bosque | Institucional, navegación, footer, títulos fuertes | `#173329` |
 | Dorado litúrgico | Acentos, CTAs, iconos, líneas y detalles | `#C2A46B` |
 | Marfil cálido | Fondo principal y respiración visual | `#F7F3EA` |
 | Beige piedra | Fondos secundarios, bloques suaves, tarjetas y separadores | `#D8CFC2` |
