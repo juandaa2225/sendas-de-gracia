@@ -862,6 +862,14 @@ h2 {
   object-position: center;
 }
 
+.ministry-service-intro {
+  margin-bottom: clamp(48px, 7vw, 82px);
+}
+
+.ministry-service-intro .media-panel.portrait img {
+  object-position: center 28%;
+}
+
 .mini-list {
   display: grid;
   gap: 12px;
