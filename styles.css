@@ -1119,6 +1119,11 @@ details.distinctive-card[open] summary::after {
   color: var(--ivory);
 }
 
+.footer-brand {
+  width: clamp(130px, 12vw, 170px);
+  height: auto;
+}
+
 .site-footer p {
   margin-bottom: 0;
 }
@@ -1321,6 +1326,10 @@ details.distinctive-card[open] summary::after {
   .site-footer {
     grid-template-columns: 1fr;
     text-align: center;
+  }
+
+  .footer-brand {
+    justify-self: center;
   }
 
   .footer-note {
