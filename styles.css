@@ -773,6 +773,18 @@ h2 {
   font-size: 18px;
 }
 
+.prayer-feature .prayer-schedule {
+  width: fit-content;
+  margin-top: 24px;
+  padding: 12px 16px;
+  border-left: 3px solid var(--gold);
+  background: rgba(12, 33, 25, 0.68);
+  color: var(--ivory);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
 .photo-story-grid {
   max-width: var(--max);
   margin: 0 auto;
