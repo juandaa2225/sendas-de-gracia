@@ -725,6 +725,54 @@ h2 {
   padding-top: 30px;
 }
 
+.prayer-feature {
+  position: relative;
+  min-height: clamp(420px, 48vw, 640px);
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  color: var(--ivory);
+  background: var(--forest);
+}
+
+.prayer-feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(12, 33, 25, 0.88) 0%, rgba(12, 33, 25, 0.55) 46%, rgba(12, 33, 25, 0.12) 76%),
+    linear-gradient(0deg, rgba(12, 33, 25, 0.55), transparent 52%);
+}
+
+.prayer-feature > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 28%;
+}
+
+.prayer-feature-copy {
+  position: relative;
+  z-index: 1;
+  width: min(680px, calc(100% - 40px));
+  margin: 0 clamp(20px, 9vw, 130px) clamp(42px, 7vw, 86px);
+}
+
+.prayer-feature h2 {
+  margin-bottom: 16px;
+  color: var(--ivory);
+  font-size: clamp(40px, 5.4vw, 72px);
+}
+
+.prayer-feature p {
+  max-width: 590px;
+  margin-bottom: 0;
+  color: #f4ede0;
+  font-size: 18px;
+}
+
 .photo-story-grid {
   max-width: var(--max);
   margin: 0 auto;
@@ -1523,6 +1571,28 @@ details.distinctive-card[open] summary::after {
 
   .media-panel.portrait img {
     height: min(128vw, 590px);
+  }
+
+  .prayer-feature {
+    min-height: 540px;
+  }
+
+  .prayer-feature::after {
+    background:
+      linear-gradient(0deg, rgba(12, 33, 25, 0.92) 0%, rgba(12, 33, 25, 0.54) 58%, rgba(12, 33, 25, 0.2) 100%);
+  }
+
+  .prayer-feature > img {
+    object-position: 63% center;
+  }
+
+  .prayer-feature-copy {
+    width: auto;
+    margin: 0 18px 38px;
+  }
+
+  .prayer-feature h2 {
+    font-size: clamp(38px, 11vw, 50px);
   }
 
   .photo-story-grid {
