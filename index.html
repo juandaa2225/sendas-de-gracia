@@ -7,14 +7,14 @@
     <title>Sendas de Gracia · Iglesia Bíblica</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="icon" href="assets/icons/logo-verde.png" type="image/png" />
+    <link rel="icon" href="assets/logos/verde.png" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=20260610-9" />
   </head>
   <body>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="Sendas de Gracia">
-        <img src="assets/icons/logo-verde.png" alt="" class="brand-logo" width="54" height="54" />
+        <img src="assets/logos/verde.png" alt="" class="brand-logo" width="54" height="54" />
         <span class="brand-lockup">
           <span class="brand-subtitle">Iglesia Bíblica</span>
           <span class="brand-title">Sendas de Gracia</span>
@@ -53,10 +53,12 @@
             <a class="btn btn-light" href="predicaciones/">Ver predicaciones</a>
           </div>
         </div>
-        <aside class="hero-card" aria-label="Proxima reunion">
-          <span>Domingo</span>
-          <strong>10:30 a.m.</strong>
-          <p>Culto de adoración y predicación. También nos reunimos desde las 8:30 a.m. para oración y escuela dominical.</p>
+        <aside class="hero-card" aria-label="Próxima reunión">
+          <div>
+            <span>Próxima reunión</span>
+            <strong>Domingo · 10:30 a.m.</strong>
+          </div>
+          <p>Oración y escuela dominical desde las 8:30 a.m.</p>
         </aside>
       </section>
 
@@ -69,9 +71,8 @@
       </section>
 
       <section class="section media-split">
-        <figure class="media-panel">
-          <img src="assets/images/biblia-pulpito-temporal.png" alt="Biblia abierta sobre un púlpito en una sala de reunión" width="1680" height="960" loading="lazy" />
-          <figcaption>Imagen temporal generada; reemplazar por fotografía real de la iglesia cuando esté disponible.</figcaption>
+        <figure class="media-panel portrait">
+          <img src="assets/images/biblia2.jpeg" alt="Una integrante de la iglesia sostiene su Biblia abierta durante la reunión" width="1080" height="1920" loading="lazy" />
         </figure>
         <div class="media-copy">
           <p class="kicker">La Palabra al centro</p>
@@ -101,6 +102,37 @@
             <h3>Culto de oración</h3>
             <p>Último miércoles de cada mes · 6:30 p.m. a 8:00 p.m. · Oración como iglesia.</p>
           </article>
+        </div>
+      </section>
+
+      <section class="prayer-feature" aria-label="Oración congregacional">
+        <img src="assets/images/oracion_horizontal.jpeg" alt="Uno de los líderes de la iglesia dirige un tiempo de oración congregacional" width="1920" height="1080" loading="lazy" />
+        <div class="prayer-feature-copy">
+          <p class="kicker">Oramos juntos</p>
+          <h2>Dependemos de Dios en cada paso.</h2>
+          <p>La oración congregacional acompaña nuestra adoración, enseñanza y vida como iglesia.</p>
+          <p class="prayer-schedule">Culto de oración · Último miércoles de cada mes · 6:30 p.m.</p>
+        </div>
+      </section>
+
+      <section class="section section-muted photo-story" aria-labelledby="vida-title">
+        <div class="section-heading">
+          <p class="kicker">Vida congregacional</p>
+          <h2 id="vida-title">Aprendemos, adoramos y crecemos juntos.</h2>
+        </div>
+        <div class="photo-story-grid">
+          <figure class="photo-story-card photo-story-card-class">
+            <img src="assets/images/clase2.jpeg" alt="Miembros de la iglesia participan en una clase bíblica" width="1920" height="1080" loading="lazy" />
+            <figcaption>Formados en la Palabra</figcaption>
+          </figure>
+          <figure class="photo-story-card">
+            <img src="assets/images/canto1.jpeg" alt="Un músico guía el canto congregacional desde el púlpito" width="1080" height="1352" loading="lazy" />
+            <figcaption>Adoración reverente</figcaption>
+          </figure>
+          <figure class="photo-story-card">
+            <img src="assets/images/jacob.jpeg" alt="Una madre sostiene a su hijo durante la reunión de la iglesia" width="1920" height="1080" loading="lazy" />
+            <figcaption>Una familia de fe</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -233,10 +265,7 @@
     </main>
 
     <footer class="site-footer">
-      <div>
-        <img src="assets/icons/logo_marfil_dorado.svg" alt="" width="58" height="58" loading="lazy" />
-        <p>Sendas de Gracia</p>
-      </div>
+      <img src="assets/logos/marfil_texto.png" alt="Sendas de Gracia, Iglesia Bíblica" class="footer-brand" width="170" height="168" />
       <nav aria-label="Enlaces del footer">
         <a href="nosotros/">Nosotros</a>
         <a href="predicaciones/">Predicaciones</a>
