@@ -808,6 +808,10 @@ h2 {
   transition: transform 500ms ease;
 }
 
+.photo-story-card-class img {
+  object-position: right center;
+}
+
 .photo-story-card:nth-child(2) img {
   object-position: center 24%;
 }
@@ -1623,6 +1627,10 @@ details.distinctive-card[open] summary::after {
   .photo-story-card:first-child {
     min-height: 72vw;
     grid-row: auto;
+  }
+
+  .photo-story-card-class img {
+    object-position: right center;
   }
 
   .photo-story-card figcaption {
