@@ -217,6 +217,7 @@ a {
 
 .hero-copy {
   max-width: 840px;
+  transform: translateY(-48px);
 }
 
 .hero .kicker {
@@ -309,6 +310,10 @@ h2 {
   color: #26382f;
   box-shadow: var(--shadow);
   padding: 24px;
+}
+
+.hero-card {
+  transform: translateY(-48px);
 }
 
 .hero-card span,
@@ -1317,6 +1322,11 @@ details.distinctive-card[open] summary::after {
 }
 
 @media (max-width: 1080px) {
+  .hero-copy,
+  .hero-card {
+    transform: none;
+  }
+
   .site-header {
     grid-template-columns: auto auto;
   }
