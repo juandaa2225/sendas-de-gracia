@@ -335,6 +335,21 @@ const formatSermonTitle = (value) => {
     biblia: "Biblia",
     escrituras: "Escrituras",
   };
+  const properNames = {
+    juan: "Juan",
+    johan: "Johan",
+    david: "David",
+    marco: "Marco",
+    arango: "Arango",
+    moreno: "Moreno",
+    gonzalez: "González",
+    gonzáles: "González",
+    gonzález: "González",
+    gonzales: "González",
+    alvarino: "Alvariño",
+    alvariño: "Alvariño",
+    pardo: "Pardo",
+  };
 
   return parts
     .map((part, index) => {
@@ -348,6 +363,10 @@ const formatSermonTitle = (value) => {
       formatted = formatted.replace(
         /\b(dios|jehová|señor|cristo|jesús|jesucristo|mesías|espíritu santo|biblia|escrituras)\b/giu,
         (term) => reverentialTerms[term.toLocaleLowerCase("es")]
+      );
+      formatted = formatted.replace(
+        /\b(juan|johan|david|marco|arango|moreno|gonzalez|gonzáles|gonzález|gonzales|alvarino|alvariño|pardo)\b/giu,
+        (name) => properNames[name.toLocaleLowerCase("es")]
       );
 
       const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
