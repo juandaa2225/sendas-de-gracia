@@ -159,6 +159,133 @@ const initReveals = (root = document) => {
   });
 };
 
+const initAmbientField = (hero) => {
+  const canvas = hero.querySelector(".hero-ambient");
+  if (!canvas || reducedMotionQuery.matches) return;
+
+  const context = canvas.getContext("2d");
+  if (!context) return;
+
+  let width = 0;
+  let height = 0;
+  let particles = [];
+  let animationFrame = 0;
+  let isVisible = true;
+  let pointerActive = false;
+  const pointer = { x: 0, y: 0 };
+
+  const createParticles = () => {
+    const count = width < 760 ? 24 : Math.min(58, Math.max(36, Math.round(width / 25)));
+    particles = Array.from({ length: count }, (_, index) => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.13,
+      vy: (Math.random() - 0.5) * 0.1,
+      radius: index % 7 === 0 ? 1.65 : Math.random() * 0.8 + 0.45,
+      alpha: Math.random() * 0.42 + 0.2,
+    }));
+  };
+
+  const resize = () => {
+    const bounds = hero.getBoundingClientRect();
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 1.5);
+    width = Math.max(1, bounds.width);
+    height = Math.max(1, bounds.height);
+    canvas.width = Math.round(width * pixelRatio);
+    canvas.height = Math.round(height * pixelRatio);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    createParticles();
+  };
+
+  const draw = () => {
+    context.clearRect(0, 0, width, height);
+    particles.forEach((particle, index) => {
+      if (pointerActive) {
+        const dx = pointer.x - particle.x;
+        const dy = pointer.y - particle.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < 150 && distance > 0) {
+          const influence = (1 - distance / 150) * 0.012;
+          particle.vx += dx * influence * 0.018;
+          particle.vy += dy * influence * 0.018;
+        }
+      }
+
+      particle.vx *= 0.994;
+      particle.vy *= 0.994;
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+
+      if (particle.x < -8) particle.x = width + 8;
+      if (particle.x > width + 8) particle.x = -8;
+      if (particle.y < -8) particle.y = height + 8;
+      if (particle.y > height + 8) particle.y = -8;
+
+      context.beginPath();
+      context.fillStyle = `rgba(226, 201, 131, ${particle.alpha})`;
+      context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+      context.fill();
+
+      for (let nextIndex = index + 1; nextIndex < particles.length; nextIndex += 1) {
+        const next = particles[nextIndex];
+        const distance = Math.hypot(particle.x - next.x, particle.y - next.y);
+        if (distance > 105) continue;
+        context.beginPath();
+        context.strokeStyle = `rgba(226, 201, 131, ${(1 - distance / 105) * 0.11})`;
+        context.lineWidth = 0.7;
+        context.moveTo(particle.x, particle.y);
+        context.lineTo(next.x, next.y);
+        context.stroke();
+      }
+    });
+
+    if (isVisible && !document.hidden) animationFrame = window.requestAnimationFrame(draw);
+  };
+
+  const start = () => {
+    window.cancelAnimationFrame(animationFrame);
+    if (isVisible && !document.hidden) animationFrame = window.requestAnimationFrame(draw);
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) start();
+      else window.cancelAnimationFrame(animationFrame);
+    },
+    { threshold: 0.05 }
+  );
+
+  hero.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "touch") return;
+    const bounds = hero.getBoundingClientRect();
+    const normalizedX = (event.clientX - bounds.left) / bounds.width;
+    const normalizedY = (event.clientY - bounds.top) / bounds.height;
+    pointer.x = event.clientX - bounds.left;
+    pointer.y = event.clientY - bounds.top;
+    pointerActive = true;
+    hero.style.setProperty("--hero-x", `${normalizedX * 100}%`);
+    hero.style.setProperty("--hero-y", `${normalizedY * 100}%`);
+    hero.style.setProperty("--hero-copy-x", `${(normalizedX - 0.5) * -8}px`);
+    hero.style.setProperty("--hero-copy-y", `${(normalizedY - 0.5) * -6}px`);
+    hero.style.setProperty("--hero-card-x", `${(normalizedX - 0.5) * 11}px`);
+    hero.style.setProperty("--hero-card-y", `${(normalizedY - 0.5) * 8}px`);
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    pointerActive = false;
+    ["--hero-copy-x", "--hero-copy-y", "--hero-card-x", "--hero-card-y"].forEach((property) => hero.style.removeProperty(property));
+  });
+  document.addEventListener("visibilitychange", start);
+  window.addEventListener("resize", resize);
+  resize();
+  observer.observe(hero);
+};
+
+document.querySelectorAll("[data-ambient-field]").forEach(initAmbientField);
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartedAtRightEdge = false;

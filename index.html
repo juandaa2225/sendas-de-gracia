@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" href="assets/logos/verde.png" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260611-1" />
+    <link rel="stylesheet" href="styles.css?v=20260611-motion2" />
   </head>
   <body>
     <header class="site-header">
@@ -43,7 +43,8 @@
     </header>
 
     <main>
-      <section class="hero hero-home">
+      <section class="hero hero-home hero-motion" data-ambient-field>
+        <canvas class="hero-ambient" aria-hidden="true"></canvas>
         <div class="hero-copy">
           <p class="kicker">Iglesia bíblica en misión</p>
           <h1>Impartimos fielmente la verdad bíblica</h1>
@@ -275,6 +276,6 @@
       <p class="footer-note">Domingos 10:30 a.m. · Cl. 30 Sur #43a - 62, Envigado · +57 350 2152394</p>
     </footer>
 
-    <script src="assets/site.js" defer></script>
+    <script src="assets/site.js?v=20260611-motion2" defer></script>
   </body>
 </html>
