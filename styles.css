@@ -954,6 +954,10 @@ h2 {
   gap: 18px;
 }
 
+.doctrine-track[hidden] {
+  display: none;
+}
+
 .doctrine-card {
   position: relative;
   display: grid;
@@ -963,16 +967,9 @@ h2 {
   padding: 24px;
   overflow: hidden;
   transition:
-    opacity 220ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
-}
-
-.doctrine-card > * {
-  transition:
-    opacity 220ms ease,
-    transform 260ms ease;
 }
 
 .doctrine-card::before {
@@ -1008,61 +1005,173 @@ h2 {
   font-size: 17px;
 }
 
-.doctrine-carousel.is-carousel-ready {
-  justify-items: center;
+.doctrine-experience {
+  position: relative;
+  isolation: isolate;
+  min-height: 610px;
+  padding: clamp(28px, 5vw, 62px);
+  overflow: hidden;
+  border: 1px solid rgba(194, 164, 107, 0.34);
+  background:
+    radial-gradient(circle at var(--pointer-x, 50%) 0%, rgba(194, 164, 107, 0.22), transparent 34%),
+    radial-gradient(circle at 88% 86%, rgba(194, 164, 107, 0.12), transparent 31%),
+    linear-gradient(145deg, #10291f, var(--forest-deep));
+  box-shadow: 0 28px 70px rgba(16, 37, 27, 0.2);
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-track {
-  width: 100%;
+.doctrine-experience::before,
+.doctrine-experience::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(194, 164, 107, 0.18);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.doctrine-experience::before {
+  width: 440px;
+  height: 440px;
+  top: -310px;
+  right: -70px;
+}
+
+.doctrine-experience::after {
+  width: 320px;
+  height: 320px;
+  bottom: -238px;
+  left: 8%;
+}
+
+.doctrine-dock-label {
+  margin: 0 0 18px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.doctrine-dock {
   display: flex;
-  gap: 22px;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(5px, 0.7vw, 10px);
+  min-height: 116px;
+  margin: 0 auto clamp(28px, 5vw, 50px);
+  padding: 14px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 6px max(24px, calc((100% - 820px) / 2)) 18px;
-  scroll-padding-inline: max(24px, calc((100% - 820px) / 2));
-  scroll-snap-type: x mandatory;
+  border: 1px solid rgba(247, 243, 234, 0.13);
+  background: rgba(247, 243, 234, 0.075);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 20px 46px rgba(0, 0, 0, 0.16);
   scrollbar-width: none;
-  overscroll-behavior-inline: contain;
-  -webkit-overflow-scrolling: touch;
+  backdrop-filter: blur(12px);
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-track::-webkit-scrollbar {
+.doctrine-dock::-webkit-scrollbar {
   display: none;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card {
-  flex: 0 0 min(820px, calc(100vw - 72px));
-  min-height: 300px;
-  padding: 38px;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  opacity: 0.42;
-  transform: scale(0.94);
+.doctrine-node {
+  --proximity: 0;
+  flex: 0 0 clamp(44px, 5vw, 62px);
+  width: clamp(44px, 5vw, 62px);
+  height: clamp(58px, 6vw, 72px);
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(247, 243, 234, 0.14);
+  background: rgba(247, 243, 234, calc(0.07 + var(--proximity) * 0.12));
+  color: rgba(247, 243, 234, calc(0.56 + var(--proximity) * 0.44));
   cursor: pointer;
+  transform: translateY(calc(var(--proximity) * -10px)) scaleY(calc(1 + var(--proximity) * 0.34));
+  transform-origin: center bottom;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 220ms ease,
+    transform 110ms linear;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card > * {
-  opacity: 0.55;
-  transform: translateY(8px);
+.doctrine-node span {
+  font-family: Cinzel, serif;
+  font-size: clamp(13px, 1.4vw, 18px);
+  font-weight: 600;
+  transform: scaleY(calc(1 / (1 + var(--proximity) * 0.34)));
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active {
-  opacity: 1;
-  border-color: rgba(194, 164, 107, 0.62);
-  background: var(--ivory-soft);
-  box-shadow: 0 20px 44px rgba(16, 37, 27, 0.1);
-  transform: scale(1);
-  cursor: default;
+.doctrine-node:hover,
+.doctrine-node:focus-visible,
+.doctrine-node.is-active {
+  border-color: rgba(194, 164, 107, 0.82);
+  background: var(--gold);
+  color: var(--forest-deep);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  outline: none;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active::before {
-  border-color: var(--gold);
+.doctrine-node.is-active {
+  --proximity: 1;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active > * {
-  opacity: 1;
-  transform: translateY(0);
+.doctrine-reader {
+  position: relative;
+  max-width: 850px;
+  min-height: 260px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 52px);
+  border: 1px solid rgba(194, 164, 107, 0.44);
+  background: rgba(255, 253, 248, 0.97);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.2);
+}
+
+.doctrine-reader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(28px, 5vw, 52px);
+  width: 76px;
+  height: 3px;
+  background: var(--gold);
+}
+
+.doctrine-reader .card-number {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.doctrine-reader h2 {
+  max-width: 680px;
+  margin: 0 0 18px;
+  color: var(--forest);
+  font-family: Cinzel, serif;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.12;
+}
+
+.doctrine-reader p {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(16px, 1.8vw, 19px);
+}
+
+.doctrine-reader.is-changing > * {
+  animation: doctrine-reader-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes doctrine-reader-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .doctrine-controls {
@@ -1071,7 +1180,7 @@ h2 {
   gap: 16px;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 24px;
 }
 
 .doctrine-controls[hidden] {
@@ -1102,11 +1211,23 @@ h2 {
 
 .doctrine-progress {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 243, 234, 0.7);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.doctrine-experience .carousel-button {
+  border-color: rgba(247, 243, 234, 0.22);
+  background: rgba(247, 243, 234, 0.08);
+  color: var(--ivory);
+}
+
+.doctrine-experience .carousel-button:hover,
+.doctrine-experience .carousel-button:focus-visible {
+  border-color: var(--gold);
+  background: rgba(194, 164, 107, 0.18);
 }
 
 .resource-list span {
@@ -1722,17 +1843,57 @@ details.distinctive-card[open] summary::after {
     height: 320px;
   }
 
-  .doctrine-carousel.is-carousel-ready .doctrine-card {
-    flex-basis: calc(100vw - 98px);
+  .doctrine-experience {
     min-height: 0;
-    padding: 24px;
+    margin-inline: -4px;
+    padding: 28px 14px;
   }
 
-  .doctrine-card h2 {
-    font-size: 20px;
+  .doctrine-dock-label {
+    margin-bottom: 12px;
   }
 
-  .doctrine-card p {
+  .doctrine-dock {
+    justify-content: flex-start;
+    min-height: 98px;
+    margin-bottom: 24px;
+    padding: 12px calc(50% - 30px);
+    scroll-padding-inline: calc(50% - 30px);
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .doctrine-node {
+    flex-basis: 52px;
+    width: 52px;
+    height: 64px;
+    scroll-snap-align: center;
+    transform: none;
+  }
+
+  .doctrine-node span {
+    transform: none;
+  }
+
+  .doctrine-node.is-active {
+    transform: translateY(-5px);
+  }
+
+  .doctrine-reader {
+    min-height: 330px;
+    padding: 34px 24px 28px;
+  }
+
+  .doctrine-reader::before {
+    left: 24px;
+  }
+
+  .doctrine-reader h2 {
+    font-size: clamp(27px, 8vw, 38px);
+  }
+
+  .doctrine-reader p {
     font-size: 16px;
   }
 
@@ -1773,5 +1934,14 @@ details.distinctive-card[open] summary::after {
 
   .flip-card-inner {
     transition: none;
+  }
+
+  .doctrine-node {
+    transform: none;
+    transition: none;
+  }
+
+  .doctrine-reader.is-changing > * {
+    animation: none;
   }
 }

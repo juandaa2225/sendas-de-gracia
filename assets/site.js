@@ -265,58 +265,99 @@ const initDoctrineCarousel = (carousel) => {
   if (!track || !cards.length || !controls || !prevButton || !nextButton || !currentLabel || !totalLabel) return;
 
   let activeIndex = 0;
-  let scrollFrame = 0;
+  let pointerFrame = 0;
+  const experience = document.createElement("div");
+  const dockLabel = document.createElement("p");
+  const dock = document.createElement("div");
+  const reader = document.createElement("article");
+  const nodes = cards.map((card, index) => {
+    const button = document.createElement("button");
+    const number = card.querySelector(".card-number")?.textContent || String(index + 1).padStart(2, "0");
+    const title = card.querySelector("h2")?.textContent || "";
+    button.className = "doctrine-node";
+    button.type = "button";
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-label", `${number}. ${title}`);
+    button.dataset.index = String(index);
+    button.innerHTML = `<span aria-hidden="true">${number}</span>`;
+    dock.append(button);
+    return button;
+  });
+
+  experience.className = "doctrine-experience";
+  dockLabel.className = "doctrine-dock-label";
+  dockLabel.textContent = "Explora las convicciones";
+  dock.className = "doctrine-dock";
+  dock.setAttribute("role", "tablist");
+  dock.setAttribute("aria-label", "Puntos de la declaración doctrinal");
+  reader.className = "doctrine-reader";
+  reader.setAttribute("role", "tabpanel");
+  reader.setAttribute("aria-live", "polite");
+  experience.append(dockLabel, dock, reader, controls);
+  carousel.insertBefore(experience, track);
+  track.hidden = true;
+
   totalLabel.textContent = String(cards.length).padStart(2, "0");
   controls.hidden = false;
-  carousel.classList.add("is-carousel-ready");
 
   const setActive = (nextIndex) => {
     activeIndex = (nextIndex + cards.length) % cards.length;
-    cards.forEach((card, index) => {
+    nodes.forEach((node, index) => {
       const isActive = index === activeIndex;
-      card.classList.toggle("is-active", isActive);
-      card.setAttribute("aria-current", isActive ? "true" : "false");
+      node.classList.toggle("is-active", isActive);
+      node.setAttribute("aria-selected", isActive ? "true" : "false");
+      node.tabIndex = isActive ? 0 : -1;
     });
-    currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
-  };
 
-  const getNearestCardIndex = () => {
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    return cards.reduce(
-      (nearest, card, index) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const distance = Math.abs(cardCenter - trackCenter);
-        return distance < nearest.distance ? { index, distance } : nearest;
-      },
-      { index: activeIndex, distance: Number.POSITIVE_INFINITY }
-    ).index;
+    const source = cards[activeIndex];
+    const number = source.querySelector(".card-number")?.textContent || "";
+    const title = source.querySelector("h2")?.textContent || "";
+    const body = source.querySelector("p")?.textContent || "";
+    reader.classList.remove("is-changing");
+    reader.innerHTML = `<span class="card-number">${number}</span><h2>${title}</h2><p>${body}</p>`;
+    void reader.offsetWidth;
+    reader.classList.add("is-changing");
+    currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
   };
 
   const goTo = (nextIndex) => {
     const normalizedIndex = (nextIndex + cards.length) % cards.length;
-    const card = cards[normalizedIndex];
-    const left = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
-    track.scrollTo({
-      left,
-      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
-    });
     setActive(normalizedIndex);
+    nodes[normalizedIndex].scrollIntoView({
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+      block: "nearest",
+      inline: "center",
+    });
   };
 
   prevButton.addEventListener("click", () => goTo(activeIndex - 1));
   nextButton.addEventListener("click", () => goTo(activeIndex + 1));
-  cards.forEach((card, index) => {
-    card.addEventListener("click", () => {
-      if (index !== activeIndex) goTo(index);
+  nodes.forEach((node, index) => {
+    node.addEventListener("click", () => goTo(index));
+    node.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") goTo(activeIndex - 1);
+      if (event.key === "ArrowRight") goTo(activeIndex + 1);
+      if (event.key === "Home") goTo(0);
+      if (event.key === "End") goTo(cards.length - 1);
     });
   });
-  track.addEventListener("scroll", () => {
-    window.cancelAnimationFrame(scrollFrame);
-    scrollFrame = window.requestAnimationFrame(() => setActive(getNearestCardIndex()));
+
+  dock.addEventListener("pointermove", (event) => {
+    if (reducedMotionQuery.matches || event.pointerType === "touch") return;
+    window.cancelAnimationFrame(pointerFrame);
+    pointerFrame = window.requestAnimationFrame(() => {
+      experience.style.setProperty("--pointer-x", `${((event.clientX - experience.getBoundingClientRect().left) / experience.clientWidth) * 100}%`);
+      nodes.forEach((node) => {
+        const bounds = node.getBoundingClientRect();
+        const distance = Math.abs(event.clientX - (bounds.left + bounds.width / 2));
+        const proximity = Math.max(0, 1 - distance / 150);
+        node.style.setProperty("--proximity", proximity.toFixed(3));
+      });
+    });
   });
-  track.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") goTo(activeIndex - 1);
-    if (event.key === "ArrowRight") goTo(activeIndex + 1);
+
+  dock.addEventListener("pointerleave", () => {
+    nodes.forEach((node) => node.style.removeProperty("--proximity"));
   });
 
   setActive(0);
