@@ -346,8 +346,8 @@ const formatSermonTitle = (value) => {
     gonzáles: "González",
     gonzález: "González",
     gonzales: "González",
-    alvarino: "Alvariño",
-    alvariño: "Alvariño",
+    alvarino: "Alvarino",
+    alvariño: "Alvarino",
     pardo: "Pardo",
   };
 
@@ -360,6 +360,12 @@ const formatSermonTitle = (value) => {
       let formatted = isUppercase ? cleanPart.toLocaleLowerCase("es") : cleanPart;
 
       formatted = formatted.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"));
+
+      const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
+      if (isUppercase && isLikelySpeaker) {
+        formatted = formatted.replace(/\b\p{Ll}/gu, (letter) => letter.toLocaleUpperCase("es"));
+      }
+
       formatted = formatted.replace(
         /\b(dios|jehová|señor|cristo|jesús|jesucristo|mesías|espíritu santo|biblia|escrituras)\b/giu,
         (term) => reverentialTerms[term.toLocaleLowerCase("es")]
@@ -368,11 +374,6 @@ const formatSermonTitle = (value) => {
         /\b(juan|johan|david|marco|arango|moreno|gonzalez|gonzáles|gonzález|gonzales|alvarino|alvariño|pardo)\b/giu,
         (name) => properNames[name.toLocaleLowerCase("es")]
       );
-
-      const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
-      if (isUppercase && isLikelySpeaker) {
-        formatted = formatted.replace(/\b\p{Ll}/gu, (letter) => letter.toLocaleUpperCase("es"));
-      }
 
       return formatted;
     })
