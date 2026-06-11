@@ -332,6 +332,7 @@ const formatSermonTitle = (value) => {
     jesucristo: "Jesucristo",
     mesías: "Mesías",
     "espíritu santo": "Espíritu Santo",
+    espíritu: "Espíritu",
     biblia: "Biblia",
     escrituras: "Escrituras",
   };
