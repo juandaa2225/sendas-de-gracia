@@ -49,6 +49,7 @@ Reglas para imágenes generadas:
 - No generar imágenes que pretendan representar personas reales de la congregación.
 - No usar imágenes oscuras, dramáticas, abstractas o con apariencia de anuncio comercial.
 - Documentar cuando una imagen sea temporal y deba reemplazarse por fotografía real.
+- Cuando una foto de contenido reciba tratamiento visual, aplicar una veladura verde bosque suave y continua desde el contenedor, como aura de sitio. Debe sentirse orgánica, sin líneas de corte ni bordes duros, con intensidad fuerte solo en bloques inmersivos y sutil en galerías, paneles, predicaciones y ministerios.
 
 ## Motion
 
