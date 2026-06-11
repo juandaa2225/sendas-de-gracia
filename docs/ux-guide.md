@@ -49,10 +49,11 @@ Reglas para imágenes generadas:
 - No generar imágenes que pretendan representar personas reales de la congregación.
 - No usar imágenes oscuras, dramáticas, abstractas o con apariencia de anuncio comercial.
 - Documentar cuando una imagen sea temporal y deba reemplazarse por fotografía real.
+- Cuando una foto de contenido reciba tratamiento visual, aplicar una veladura verde bosque suave y continua desde el contenedor, como aura de sitio. Debe sentirse orgánica, sin líneas de corte ni bordes duros, con intensidad fuerte solo en bloques inmersivos y sutil en galerías, paneles, predicaciones y ministerios.
 
 ## Motion
 
-El movimiento debe orientar, revelar y dar sensación de cuidado. No debe robar atención a la Palabra, bloquear el scroll ni retrasar el acceso al contenido.
+El movimiento es parte del lenguaje visual del sitio: puede crear profundidad, continuidad, carácter y una experiencia memorable. Debe sentirse fluido, intencional y profesional, sin bloquear el acceso al contenido ni comprometer su lectura.
 
 Patrones recomendados:
 
@@ -61,12 +62,24 @@ Patrones recomendados:
 - Escalonado discreto en grupos de tarjetas, distintivos o puntos doctrinales.
 - Microinteracciones en botones, enlaces y tarjetas con cambios de color, sombra mínima o desplazamiento leve.
 - Indicadores visuales sutiles para contenido expandible, como `details` doctrinales.
+- Movimiento ambiental en áreas de alto impacto, como partículas, luz, líneas o texturas vivas que refuercen la composición.
+- Interacciones espaciales por proximidad, cursor o foco cuando ayuden a comprender la relación entre elementos.
+- Desplazamientos cinematográficos ligados al scroll nativo, con velocidades diferenciadas entre imagen y contenido.
+- Motion cards con profundidad, parallax interno o iluminación localizada, manteniendo el texto estable y legible.
+
+Dirección práctica:
+
+- Concentrar el motion más expresivo en pocos momentos memorables de la página.
+- Combinar patrones distintos con una misma curva, ritmo y sensibilidad visual.
+- Priorizar `transform`, `opacity`, `requestAnimationFrame` y canvas ligero.
+- Pausar animaciones ambientales cuando estén fuera del viewport o la pestaña no esté visible.
+- En móvil, adaptar la interacción a scroll, toque y composición; no intentar reproducir literalmente una experiencia de cursor.
 
 Límites:
 
 - No usar scrolljacking.
 - No bloquear el scroll para completar animaciones.
-- No usar parallax intenso, rebotes, rotaciones grandes ni entradas teatrales.
+- Evitar parallax agresivo, rebotes constantes o rotaciones que dificulten leer e interactuar.
 - No depender del motion para entender el contenido.
 - No animar bloques largos de texto de forma que retrase la lectura.
 

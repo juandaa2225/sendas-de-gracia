@@ -10,6 +10,9 @@
   --muted: #6d6a63;
   --border: rgba(23, 51, 41, 0.16);
   --shadow: 0 18px 46px rgba(16, 37, 27, 0.12);
+  --image-aura:
+    0 18px 44px rgba(23, 51, 41, 0.14),
+    0 5px 18px rgba(23, 51, 41, 0.1);
   --max: 1180px;
 }
 
@@ -86,10 +89,18 @@ a {
 }
 
 .brand-title {
+  display: flex;
+  align-items: center;
+  gap: 0.18em;
   color: var(--forest);
   font-family: Cinzel, serif;
   font-size: clamp(20px, 2.2vw, 31px);
   line-height: 1.05;
+}
+
+.brand-title-small {
+  font-size: 0.725em;
+  line-height: 1;
 }
 
 .site-nav {
@@ -202,6 +213,7 @@ a {
 
 .hero {
   position: relative;
+  isolation: isolate;
   min-height: clamp(640px, calc(100vh - 82px), 760px);
   padding: clamp(72px, 9vw, 128px) clamp(20px, 5vw, 56px) clamp(44px, 7vw, 72px);
   display: grid;
@@ -217,8 +229,15 @@ a {
 }
 
 .hero-copy {
+  position: relative;
+  z-index: 1;
   max-width: 840px;
   transform: translateY(-48px);
+}
+
+.hero-motion .hero-copy {
+  transform: translate3d(var(--hero-copy-x, 0), calc(-48px + var(--hero-copy-y, 0px)), 0);
+  transition: transform 180ms linear;
 }
 
 .hero .kicker {
@@ -314,7 +333,14 @@ h2 {
 }
 
 .hero-card {
+  position: relative;
+  z-index: 1;
   transform: translateY(-48px);
+}
+
+.hero-motion .hero-card {
+  transform: translate3d(var(--hero-card-x, 0), calc(-48px + var(--hero-card-y, 0px)), 0);
+  transition: transform 180ms linear;
 }
 
 .hero-card span,
@@ -601,10 +627,24 @@ h2 {
 }
 
 .sermon-thumb {
+  position: relative;
+  isolation: isolate;
   display: block;
   overflow: hidden;
   background: var(--stone);
   aspect-ratio: 16 / 9;
+  box-shadow: var(--image-aura);
+}
+
+.sermon-thumb::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 44%, transparent 34%, rgba(23, 51, 41, 0.06) 74%, rgba(16, 37, 27, 0.14) 100%),
+    linear-gradient(135deg, rgba(16, 37, 27, 0.12), rgba(23, 51, 41, 0.03) 58%, transparent 82%);
+  pointer-events: none;
 }
 
 .sermon-thumb img {
@@ -675,10 +715,25 @@ h2 {
 }
 
 .media-panel {
+  position: relative;
+  isolation: isolate;
   margin: 0;
   border: 1px solid var(--border);
   background: var(--stone);
   overflow: hidden;
+  box-shadow: var(--image-aura);
+}
+
+.media-panel::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 52% 40%, transparent 30%, rgba(23, 51, 41, 0.05) 70%, rgba(16, 37, 27, 0.12) 100%),
+    linear-gradient(135deg, rgba(16, 37, 27, 0.12), rgba(23, 51, 41, 0.03) 58%, transparent 82%),
+    linear-gradient(0deg, rgba(16, 37, 27, 0.06), transparent 52%);
+  pointer-events: none;
 }
 
 .media-panel img {
@@ -732,13 +787,18 @@ h2 {
 }
 
 .prayer-feature {
+  --cinema-progress: 0;
+  --cinema-shift: 0px;
+  --cinema-copy-shift: 0px;
   position: relative;
+  isolation: isolate;
   min-height: clamp(420px, 48vw, 640px);
   display: grid;
   align-items: end;
   overflow: hidden;
   color: var(--ivory);
   background: var(--forest);
+  box-shadow: var(--image-aura);
 }
 
 .prayer-feature::after {
@@ -759,11 +819,23 @@ h2 {
   object-position: center 28%;
 }
 
+.prayer-motion > img {
+  height: calc(100% + 90px);
+  top: -45px;
+  transform: translate3d(0, var(--cinema-shift), 0) scale(1.045);
+  will-change: transform;
+}
+
 .prayer-feature-copy {
   position: relative;
   z-index: 1;
   width: min(680px, calc(100% - 40px));
   margin: 0 clamp(20px, 9vw, 130px) clamp(42px, 7vw, 86px);
+}
+
+.prayer-motion .prayer-feature-copy {
+  transform: translate3d(0, var(--cinema-copy-shift), 0);
+  will-change: transform;
 }
 
 .prayer-feature h2 {
@@ -783,7 +855,6 @@ h2 {
   width: fit-content;
   margin-top: 24px;
   padding: 12px 16px;
-  border-left: 3px solid var(--gold);
   background: rgba(12, 33, 25, 0.68);
   color: var(--ivory);
   font-size: 14px;
@@ -800,11 +871,51 @@ h2 {
 }
 
 .photo-story-card {
+  --card-rotate-x: 0deg;
+  --card-rotate-y: 0deg;
+  --card-image-x: 0px;
+  --card-image-y: 0px;
   position: relative;
   min-height: clamp(320px, 38vw, 520px);
   margin: 0;
   overflow: hidden;
   background: var(--forest);
+  box-shadow: var(--image-aura);
+}
+
+.motion-gallery {
+  perspective: 1200px;
+}
+
+.motion-gallery .photo-story-card {
+  opacity: 0;
+  clip-path: inset(12% 0 12% 0);
+  transform: perspective(1200px) translateY(34px) rotateX(var(--card-rotate-x)) rotateY(var(--card-rotate-y));
+  transform-style: preserve-3d;
+  transition:
+    opacity 650ms ease,
+    clip-path 850ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 420ms ease;
+}
+
+.motion-gallery.is-in-view .photo-story-card {
+  opacity: 1;
+  clip-path: inset(0);
+  transform: perspective(1200px) translateY(0) rotateX(var(--card-rotate-x)) rotateY(var(--card-rotate-y));
+}
+
+.motion-gallery.is-in-view .photo-story-card:nth-child(2) {
+  transition-delay: 90ms, 90ms, 0ms, 0ms;
+}
+
+.motion-gallery.is-in-view .photo-story-card:nth-child(3) {
+  transition-delay: 180ms, 180ms, 0ms, 0ms;
+}
+
+.motion-gallery .photo-story-card.is-engaged {
+  z-index: 2;
+  box-shadow: 0 28px 54px rgba(16, 37, 27, 0.22);
 }
 
 .photo-story-card img {
@@ -812,6 +923,15 @@ h2 {
   height: 100%;
   object-fit: cover;
   transition: transform 500ms ease;
+}
+
+.motion-gallery .photo-story-card img {
+  width: calc(100% + 30px);
+  max-width: none;
+  height: calc(100% + 30px);
+  margin: -15px;
+  transform: translate3d(var(--card-image-x), var(--card-image-y), 0) scale(1.025);
+  transition: transform 180ms linear;
 }
 
 .photo-story-card-class img {
@@ -829,8 +949,11 @@ h2 {
 .photo-story-card::after {
   content: "";
   position: absolute;
-  inset: 45% 0 0;
-  background: linear-gradient(transparent, rgba(12, 33, 25, 0.82));
+  inset: 0;
+  background:
+    radial-gradient(circle at 52% 40%, transparent 26%, rgba(23, 51, 41, 0.08) 72%, rgba(12, 33, 25, 0.26) 100%),
+    linear-gradient(180deg, rgba(12, 33, 25, 0.02) 0%, rgba(12, 33, 25, 0.02) 46%, rgba(12, 33, 25, 0.42) 100%),
+    linear-gradient(135deg, rgba(16, 37, 27, 0.08), transparent 78%);
   pointer-events: none;
 }
 
@@ -839,7 +962,7 @@ h2 {
   right: 22px;
   bottom: 20px;
   left: 22px;
-  z-index: 1;
+  z-index: 2;
   color: var(--ivory);
   font-family: "Cormorant Garamond", Georgia, serif;
   font-size: clamp(25px, 2.5vw, 36px);
@@ -847,15 +970,29 @@ h2 {
   line-height: 1.05;
 }
 
-.photo-story-card:hover img {
+.photo-story-card:hover:not(.is-engaged) img {
   transform: scale(1.025);
 }
 
 .editorial-photo {
+  position: relative;
+  isolation: isolate;
   max-width: var(--max);
   margin: 0 auto 36px;
   overflow: hidden;
   background: var(--stone);
+  box-shadow: var(--image-aura);
+}
+
+.editorial-photo::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background:
+    radial-gradient(circle at 58% 42%, transparent 28%, rgba(23, 51, 41, 0.05) 72%, rgba(16, 37, 27, 0.12) 100%),
+    linear-gradient(110deg, rgba(16, 37, 27, 0.15), rgba(23, 51, 41, 0.03) 52%, transparent 84%);
+  pointer-events: none;
 }
 
 .editorial-photo img {
@@ -954,6 +1091,10 @@ h2 {
   gap: 18px;
 }
 
+.doctrine-track[hidden] {
+  display: none;
+}
+
 .doctrine-card {
   position: relative;
   display: grid;
@@ -963,16 +1104,9 @@ h2 {
   padding: 24px;
   overflow: hidden;
   transition:
-    opacity 220ms ease,
     border-color 180ms ease,
     box-shadow 180ms ease,
     transform 180ms ease;
-}
-
-.doctrine-card > * {
-  transition:
-    opacity 220ms ease,
-    transform 260ms ease;
 }
 
 .doctrine-card::before {
@@ -1008,61 +1142,195 @@ h2 {
   font-size: 17px;
 }
 
-.doctrine-carousel.is-carousel-ready {
-  justify-items: center;
+.doctrine-experience {
+  position: relative;
+  isolation: isolate;
+  min-height: 610px;
+  padding: clamp(28px, 5vw, 62px);
+  overflow: hidden;
+  border: 1px solid rgba(194, 164, 107, 0.34);
+  background:
+    radial-gradient(circle at var(--pointer-x, 50%) 0%, rgba(194, 164, 107, 0.22), transparent 34%),
+    radial-gradient(circle at 88% 86%, rgba(194, 164, 107, 0.12), transparent 31%),
+    linear-gradient(145deg, #10291f, var(--forest-deep));
+  box-shadow: 0 28px 70px rgba(16, 37, 27, 0.2);
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-track {
-  width: 100%;
+.doctrine-experience::before,
+.doctrine-experience::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border: 1px solid rgba(194, 164, 107, 0.18);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.doctrine-experience::before {
+  width: 440px;
+  height: 440px;
+  top: -310px;
+  right: -70px;
+}
+
+.doctrine-experience::after {
+  width: 320px;
+  height: 320px;
+  bottom: -238px;
+  left: 8%;
+}
+
+.doctrine-dock-label {
+  margin: 0 0 18px;
+  color: rgba(247, 243, 234, 0.62);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.doctrine-dock {
   display: flex;
-  gap: 22px;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(5px, 0.7vw, 10px);
+  min-height: 116px;
+  margin: 0 auto clamp(28px, 5vw, 50px);
+  padding: 14px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 6px max(24px, calc((100% - 820px) / 2)) 18px;
-  scroll-padding-inline: max(24px, calc((100% - 820px) / 2));
-  scroll-snap-type: x mandatory;
+  border: 1px solid rgba(247, 243, 234, 0.13);
+  background: rgba(247, 243, 234, 0.075);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    0 20px 46px rgba(0, 0, 0, 0.16);
   scrollbar-width: none;
-  overscroll-behavior-inline: contain;
-  -webkit-overflow-scrolling: touch;
+  backdrop-filter: blur(12px);
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-track::-webkit-scrollbar {
+.doctrine-dock::-webkit-scrollbar {
   display: none;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card {
-  flex: 0 0 min(820px, calc(100vw - 72px));
-  min-height: 300px;
-  padding: 38px;
-  scroll-snap-align: center;
-  scroll-snap-stop: always;
-  opacity: 0.42;
-  transform: scale(0.94);
+.doctrine-node {
+  --proximity: 0;
+  flex: 0 1 94px;
+  min-width: 66px;
+  height: clamp(68px, 6vw, 78px);
+  display: grid;
+  align-content: center;
+  place-items: center;
+  gap: 3px;
+  padding: 8px 5px;
+  border: 1px solid rgba(247, 243, 234, 0.14);
+  background: rgba(247, 243, 234, calc(0.07 + var(--proximity) * 0.12));
+  color: rgba(247, 243, 234, calc(0.56 + var(--proximity) * 0.44));
   cursor: pointer;
+  transform: translateY(calc(var(--proximity) * -10px)) scaleY(calc(1 + var(--proximity) * 0.34));
+  transform-origin: center bottom;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    box-shadow 220ms ease,
+    transform 110ms linear;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card > * {
-  opacity: 0.55;
-  transform: translateY(8px);
+.doctrine-node-number,
+.doctrine-node-keyword {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: scaleY(calc(1 / (1 + var(--proximity) * 0.34)));
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active {
-  opacity: 1;
-  border-color: rgba(194, 164, 107, 0.62);
-  background: var(--ivory-soft);
-  box-shadow: 0 20px 44px rgba(16, 37, 27, 0.1);
-  transform: scale(1);
-  cursor: default;
+.doctrine-node-number {
+  font-family: Cinzel, serif;
+  font-size: clamp(13px, 1.4vw, 18px);
+  font-weight: 600;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active::before {
-  border-color: var(--gold);
+.doctrine-node-keyword {
+  overflow: visible;
+  font-size: clamp(7px, 0.62vw, 9px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-overflow: clip;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
-.doctrine-carousel.is-carousel-ready .doctrine-card.is-active > * {
-  opacity: 1;
-  transform: translateY(0);
+.doctrine-node:hover,
+.doctrine-node:focus-visible,
+.doctrine-node.is-active {
+  border-color: rgba(194, 164, 107, 0.82);
+  background: var(--gold);
+  color: var(--forest-deep);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+  outline: none;
+}
+
+.doctrine-node.is-active {
+  --proximity: 1;
+}
+
+.doctrine-reader {
+  position: relative;
+  max-width: 850px;
+  min-height: 260px;
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 52px);
+  border: 1px solid rgba(194, 164, 107, 0.44);
+  background: rgba(255, 253, 248, 0.97);
+  box-shadow: 0 26px 60px rgba(0, 0, 0, 0.2);
+}
+
+.doctrine-reader::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: clamp(28px, 5vw, 52px);
+  width: 76px;
+  height: 3px;
+  background: var(--gold);
+}
+
+.doctrine-reader .card-number {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.doctrine-reader h2 {
+  max-width: 680px;
+  margin: 0 0 18px;
+  color: var(--forest);
+  font-family: Cinzel, serif;
+  font-size: clamp(28px, 4vw, 46px);
+  line-height: 1.12;
+}
+
+.doctrine-reader p {
+  max-width: 720px;
+  margin: 0;
+  font-size: clamp(16px, 1.8vw, 19px);
+}
+
+.doctrine-reader.is-changing > * {
+  animation: doctrine-reader-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes doctrine-reader-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .doctrine-controls {
@@ -1071,7 +1339,7 @@ h2 {
   gap: 16px;
   align-items: center;
   justify-content: center;
-  margin-top: 8px;
+  margin-top: 24px;
 }
 
 .doctrine-controls[hidden] {
@@ -1102,11 +1370,24 @@ h2 {
 
 .doctrine-progress {
   margin: 0;
-  color: var(--muted);
+  color: rgba(247, 243, 234, 0.7);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.12em;
+  text-align: center;
   text-transform: uppercase;
+}
+
+.doctrine-experience .carousel-button {
+  border-color: rgba(247, 243, 234, 0.22);
+  background: rgba(247, 243, 234, 0.08);
+  color: var(--ivory);
+}
+
+.doctrine-experience .carousel-button:hover,
+.doctrine-experience .carousel-button:focus-visible {
+  border-color: var(--gold);
+  background: rgba(194, 164, 107, 0.18);
 }
 
 .resource-list span {
@@ -1139,6 +1420,35 @@ h2 {
   border-left: 3px solid var(--gold);
   background: var(--ivory-soft);
   padding: 22px 24px;
+}
+
+.whatsapp-link {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 10px;
+  color: var(--forest);
+  font-weight: 700;
+  text-decoration-color: rgba(23, 51, 41, 0.38);
+  text-underline-offset: 4px;
+  transition: color 160ms ease, text-decoration-color 160ms ease;
+}
+
+.whatsapp-link:hover {
+  color: #8e713d;
+  text-decoration-color: currentColor;
+}
+
+.whatsapp-link:focus-visible {
+  border-radius: 3px;
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+}
+
+.whatsapp-icon {
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
 }
 
 .motion-ready .reveal {
@@ -1352,6 +1662,11 @@ details.distinctive-card[open] summary::after {
 @media (max-width: 1080px) {
   .hero-copy,
   .hero-card {
+    transform: none;
+  }
+
+  .hero-motion .hero-copy,
+  .hero-motion .hero-card {
     transform: none;
   }
 
@@ -1658,6 +1973,12 @@ details.distinctive-card[open] summary::after {
     object-position: 63% center;
   }
 
+  .prayer-motion > img {
+    height: calc(100% + 54px);
+    top: -27px;
+    transform: translate3d(0, var(--cinema-shift), 0) scale(1.03);
+  }
+
   .prayer-feature-copy {
     width: auto;
     margin: 0 18px 38px;
@@ -1675,6 +1996,19 @@ details.distinctive-card[open] summary::after {
   .photo-story-card:first-child {
     min-height: 72vw;
     grid-row: auto;
+  }
+
+  .motion-gallery .photo-story-card,
+  .motion-gallery.is-in-view .photo-story-card {
+    transform: translateY(0);
+  }
+
+  .motion-gallery .photo-story-card img {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    transform: none;
+    transition: transform 500ms ease;
   }
 
   .photo-story-card-class img {
@@ -1722,17 +2056,63 @@ details.distinctive-card[open] summary::after {
     height: 320px;
   }
 
-  .doctrine-carousel.is-carousel-ready .doctrine-card {
-    flex-basis: calc(100vw - 98px);
+  .doctrine-experience {
     min-height: 0;
-    padding: 24px;
+    margin-inline: -4px;
+    padding: 28px 14px;
   }
 
-  .doctrine-card h2 {
-    font-size: 20px;
+  .doctrine-dock-label {
+    margin-bottom: 12px;
   }
 
-  .doctrine-card p {
+  .doctrine-dock {
+    justify-content: flex-start;
+    min-height: 98px;
+    margin-bottom: 24px;
+    padding: 12px calc(50% - 30px);
+    scroll-padding-inline: calc(50% - 30px);
+    scroll-snap-type: x proximity;
+    overscroll-behavior-inline: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .doctrine-node {
+    flex: 0 0 76px;
+    min-width: 76px;
+    height: 68px;
+    scroll-snap-align: center;
+    transform: none;
+  }
+
+  .doctrine-node-number,
+  .doctrine-node-keyword {
+    transform: none;
+  }
+
+  .doctrine-node-keyword {
+    font-size: 9px;
+  }
+
+  .doctrine-node.is-active {
+    transform: translateY(-5px);
+  }
+
+  .doctrine-reader {
+    min-height: 330px;
+    padding: 34px 24px 28px;
+    touch-action: pan-y;
+  }
+
+  .doctrine-reader::before {
+    left: 24px;
+  }
+
+  .doctrine-reader h2 {
+    font-size: clamp(27px, 8vw, 38px);
+  }
+
+  .doctrine-reader p {
     font-size: 16px;
   }
 
@@ -1772,6 +2152,39 @@ details.distinctive-card[open] summary::after {
   }
 
   .flip-card-inner {
+    transition: none;
+  }
+
+  .doctrine-node {
+    transform: none;
+    transition: none;
+  }
+
+  .doctrine-reader.is-changing > * {
+    animation: none;
+  }
+
+  .hero-motion .hero-copy,
+  .hero-motion .hero-card {
+    transform: none;
+    transition: none;
+  }
+
+  .prayer-motion > img,
+  .prayer-motion .prayer-feature-copy {
+    transform: none;
+  }
+
+  .motion-gallery .photo-story-card,
+  .motion-gallery.is-in-view .photo-story-card {
+    opacity: 1;
+    clip-path: none;
+    transform: none;
+    transition: none;
+  }
+
+  .motion-gallery .photo-story-card img {
+    transform: none;
     transition: none;
   }
 }

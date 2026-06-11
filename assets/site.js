@@ -159,6 +159,113 @@ const initReveals = (root = document) => {
   });
 };
 
+const initHeroDepth = (hero) => {
+  if (reducedMotionQuery.matches || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  hero.addEventListener("pointermove", (event) => {
+    const bounds = hero.getBoundingClientRect();
+    const normalizedX = (event.clientX - bounds.left) / bounds.width;
+    const normalizedY = (event.clientY - bounds.top) / bounds.height;
+    hero.style.setProperty("--hero-copy-x", `${(normalizedX - 0.5) * -3}px`);
+    hero.style.setProperty("--hero-copy-y", `${(normalizedY - 0.5) * -2}px`);
+    hero.style.setProperty("--hero-card-x", `${(normalizedX - 0.5) * 4}px`);
+    hero.style.setProperty("--hero-card-y", `${(normalizedY - 0.5) * 3}px`);
+  });
+
+  hero.addEventListener("pointerleave", () => {
+    ["--hero-copy-x", "--hero-copy-y", "--hero-card-x", "--hero-card-y"].forEach((property) => hero.style.removeProperty(property));
+  });
+};
+
+document.querySelectorAll("[data-hero-depth]").forEach(initHeroDepth);
+
+const initScrollCinema = (section) => {
+  if (reducedMotionQuery.matches) {
+    section.style.setProperty("--cinema-progress", "1");
+    return;
+  }
+
+  let isVisible = false;
+  let scrollFrame = 0;
+
+  const update = () => {
+    scrollFrame = 0;
+    if (!isVisible) return;
+    const bounds = section.getBoundingClientRect();
+    const travel = window.innerHeight + bounds.height;
+    const progress = Math.min(1, Math.max(0, (window.innerHeight - bounds.top) / travel));
+    const centeredProgress = progress - 0.5;
+    section.style.setProperty("--cinema-progress", progress.toFixed(3));
+    section.style.setProperty("--cinema-shift", `${centeredProgress * 54}px`);
+    section.style.setProperty("--cinema-copy-shift", `${centeredProgress * -22}px`);
+  };
+
+  const requestUpdate = () => {
+    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(update);
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) requestUpdate();
+    },
+    { rootMargin: "12% 0px 12% 0px" }
+  );
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  observer.observe(section);
+};
+
+document.querySelectorAll("[data-scroll-cinema]").forEach(initScrollCinema);
+
+const initMotionGallery = (gallery) => {
+  const cards = Array.from(gallery.querySelectorAll(".photo-story-card"));
+  if (!cards.length) return;
+
+  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+    gallery.classList.add("is-in-view");
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      gallery.classList.add("is-in-view");
+      observer.disconnect();
+    },
+    { threshold: 0.18 }
+  );
+  observer.observe(gallery);
+
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  cards.forEach((card) => {
+    let pointerFrame = 0;
+
+    card.addEventListener("pointerenter", () => card.classList.add("is-engaged"));
+    card.addEventListener("pointermove", (event) => {
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = window.requestAnimationFrame(() => {
+        const bounds = card.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width;
+        const y = (event.clientY - bounds.top) / bounds.height;
+        card.style.setProperty("--card-rotate-x", `${(0.5 - y) * 4.5}deg`);
+        card.style.setProperty("--card-rotate-y", `${(x - 0.5) * 5.5}deg`);
+        card.style.setProperty("--card-image-x", `${(0.5 - x) * 11}px`);
+        card.style.setProperty("--card-image-y", `${(0.5 - y) * 9}px`);
+      });
+    });
+    card.addEventListener("pointerleave", () => {
+      card.classList.remove("is-engaged");
+      ["--card-rotate-x", "--card-rotate-y", "--card-image-x", "--card-image-y"].forEach((property) =>
+        card.style.removeProperty(property)
+      );
+    });
+  });
+};
+
+document.querySelectorAll("[data-motion-gallery]").forEach(initMotionGallery);
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartedAtRightEdge = false;
@@ -213,6 +320,66 @@ const trimText = (value, limit = 190) => {
   return `${text.slice(0, limit).trim()}...`;
 };
 
+const formatSermonTitle = (value) => {
+  const title = String(value || "Predicación reciente").replace(/\s+/g, " ").trim();
+  const parts = title.split("|");
+  const reverentialTerms = {
+    dios: "Dios",
+    jehová: "Jehová",
+    señor: "Señor",
+    cristo: "Cristo",
+    jesús: "Jesús",
+    jesucristo: "Jesucristo",
+    mesías: "Mesías",
+    "espíritu santo": "Espíritu Santo",
+    biblia: "Biblia",
+    escrituras: "Escrituras",
+  };
+  const properNames = {
+    juan: "Juan",
+    johan: "Johan",
+    david: "David",
+    marco: "Marco",
+    arango: "Arango",
+    moreno: "Moreno",
+    gonzalez: "González",
+    gonzáles: "González",
+    gonzález: "González",
+    gonzales: "González",
+    alvarino: "Alvarino",
+    alvariño: "Alvarino",
+    pardo: "Pardo",
+  };
+
+  return parts
+    .map((part, index) => {
+      const cleanPart = part.trim();
+      const letters = cleanPart.match(/\p{L}/gu) || [];
+      const uppercaseLetters = cleanPart.match(/\p{Lu}/gu) || [];
+      const isUppercase = letters.length && uppercaseLetters.length / letters.length >= 0.7;
+      let formatted = isUppercase ? cleanPart.toLocaleLowerCase("es") : cleanPart;
+
+      formatted = formatted.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"));
+
+      const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
+      if (isUppercase && isLikelySpeaker) {
+        formatted = formatted.replace(/\b\p{Ll}/gu, (letter) => letter.toLocaleUpperCase("es"));
+      }
+
+      formatted = formatted.replace(
+        /\b(dios|jehová|señor|cristo|jesús|jesucristo|mesías|espíritu santo|biblia|escrituras)\b/giu,
+        (term) => reverentialTerms[term.toLocaleLowerCase("es")]
+      );
+      formatted = formatted.replace(
+        /\b(juan|johan|david|marco|arango|moreno|gonzalez|gonzáles|gonzález|gonzales|alvarino|alvariño|pardo)\b/giu,
+        (name) => properNames[name.toLocaleLowerCase("es")]
+      );
+
+      return formatted;
+    })
+    .join(" | ");
+};
+
 const escapeHtml = (value) =>
   String(value || "")
     .replace(/&/g, "&amp;")
@@ -232,7 +399,7 @@ const renderSermons = (container, sermons) => {
 
   container.innerHTML = selected
     .map((sermon) => {
-      const title = escapeHtml(sermon.title || "Predicación reciente");
+      const title = escapeHtml(formatSermonTitle(sermon.title));
       const url = escapeHtml(sermon.url || `https://www.youtube.com/watch?v=${sermon.videoId}`);
       const thumbnail = escapeHtml(sermon.thumbnail || `https://i.ytimg.com/vi/${sermon.videoId}/hqdefault.jpg`);
       const description = escapeHtml(trimText(sermon.description || "Mensaje reciente del canal actual de la iglesia."));
@@ -265,59 +432,156 @@ const initDoctrineCarousel = (carousel) => {
   if (!track || !cards.length || !controls || !prevButton || !nextButton || !currentLabel || !totalLabel) return;
 
   let activeIndex = 0;
-  let scrollFrame = 0;
+  let pointerFrame = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const mobileQuery = window.matchMedia("(max-width: 760px)");
+  const keywords = [
+    "Biblia",
+    "Dios",
+    "Padre",
+    "Cristo",
+    "Espíritu",
+    "Hombre",
+    "Salvación",
+    "Seguridad",
+    "Iglesia",
+    "Ángeles",
+    "Escatología",
+  ];
+  const experience = document.createElement("div");
+  const dockLabel = document.createElement("p");
+  const dock = document.createElement("div");
+  const reader = document.createElement("article");
+  const nodes = cards.map((card, index) => {
+    const button = document.createElement("button");
+    const number = card.querySelector(".card-number")?.textContent || String(index + 1).padStart(2, "0");
+    const title = card.querySelector("h2")?.textContent || "";
+    button.className = "doctrine-node";
+    button.type = "button";
+    button.setAttribute("role", "tab");
+    button.setAttribute("aria-label", `${number}. ${title}`);
+    button.dataset.index = String(index);
+    const numberLabel = document.createElement("span");
+    const keywordLabel = document.createElement("span");
+    numberLabel.className = "doctrine-node-number";
+    numberLabel.textContent = number;
+    keywordLabel.className = "doctrine-node-keyword";
+    keywordLabel.textContent = keywords[index] || title;
+    button.append(numberLabel, keywordLabel);
+    dock.append(button);
+    return button;
+  });
+
+  experience.className = "doctrine-experience";
+  dockLabel.className = "doctrine-dock-label";
+  dockLabel.textContent = "Explora las convicciones";
+  dock.className = "doctrine-dock";
+  dock.setAttribute("role", "tablist");
+  dock.setAttribute("aria-label", "Puntos de la declaración doctrinal");
+  reader.className = "doctrine-reader";
+  reader.setAttribute("role", "tabpanel");
+  reader.setAttribute("aria-live", "polite");
+  experience.append(dockLabel, dock, reader, controls);
+  carousel.insertBefore(experience, track);
+  track.hidden = true;
+
   totalLabel.textContent = String(cards.length).padStart(2, "0");
   controls.hidden = false;
-  carousel.classList.add("is-carousel-ready");
 
   const setActive = (nextIndex) => {
     activeIndex = (nextIndex + cards.length) % cards.length;
-    cards.forEach((card, index) => {
+    nodes.forEach((node, index) => {
       const isActive = index === activeIndex;
-      card.classList.toggle("is-active", isActive);
-      card.setAttribute("aria-current", isActive ? "true" : "false");
+      node.classList.toggle("is-active", isActive);
+      node.setAttribute("aria-selected", isActive ? "true" : "false");
+      node.tabIndex = isActive ? 0 : -1;
     });
+
+    const source = cards[activeIndex];
+    const number = source.querySelector(".card-number")?.textContent || "";
+    const title = source.querySelector("h2")?.textContent || "";
+    const body = source.querySelector("p")?.textContent || "";
+    reader.classList.remove("is-changing");
+    reader.innerHTML = `<span class="card-number">${number}</span><h2>${title}</h2><p>${body}</p>`;
+    void reader.offsetWidth;
+    reader.classList.add("is-changing");
     currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
   };
 
-  const getNearestCardIndex = () => {
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    return cards.reduce(
-      (nearest, card, index) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const distance = Math.abs(cardCenter - trackCenter);
-        return distance < nearest.distance ? { index, distance } : nearest;
-      },
-      { index: activeIndex, distance: Number.POSITIVE_INFINITY }
-    ).index;
+  const centerActiveNode = (index) => {
+    if (!mobileQuery.matches) return;
+    const node = nodes[index];
+    const left = node.offsetLeft - (dock.clientWidth - node.offsetWidth) / 2;
+    dock.scrollTo({
+      left,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
   };
 
   const goTo = (nextIndex) => {
     const normalizedIndex = (nextIndex + cards.length) % cards.length;
-    const card = cards[normalizedIndex];
-    const left = card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2;
-    track.scrollTo({
-      left,
-      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
-    });
     setActive(normalizedIndex);
+    centerActiveNode(normalizedIndex);
   };
 
   prevButton.addEventListener("click", () => goTo(activeIndex - 1));
   nextButton.addEventListener("click", () => goTo(activeIndex + 1));
-  cards.forEach((card, index) => {
-    card.addEventListener("click", () => {
-      if (index !== activeIndex) goTo(index);
+  nodes.forEach((node, index) => {
+    node.addEventListener("click", () => goTo(index));
+    node.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") goTo(activeIndex - 1);
+      if (event.key === "ArrowRight") goTo(activeIndex + 1);
+      if (event.key === "Home") goTo(0);
+      if (event.key === "End") goTo(cards.length - 1);
     });
   });
-  track.addEventListener("scroll", () => {
-    window.cancelAnimationFrame(scrollFrame);
-    scrollFrame = window.requestAnimationFrame(() => setActive(getNearestCardIndex()));
+
+  dock.addEventListener("pointermove", (event) => {
+    if (reducedMotionQuery.matches || event.pointerType === "touch") return;
+    window.cancelAnimationFrame(pointerFrame);
+    pointerFrame = window.requestAnimationFrame(() => {
+      experience.style.setProperty("--pointer-x", `${((event.clientX - experience.getBoundingClientRect().left) / experience.clientWidth) * 100}%`);
+      nodes.forEach((node) => {
+        const bounds = node.getBoundingClientRect();
+        const distance = Math.abs(event.clientX - (bounds.left + bounds.width / 2));
+        const proximity = Math.max(0, 1 - distance / 150);
+        node.style.setProperty("--proximity", proximity.toFixed(3));
+      });
+    });
   });
-  track.addEventListener("keydown", (event) => {
-    if (event.key === "ArrowLeft") goTo(activeIndex - 1);
-    if (event.key === "ArrowRight") goTo(activeIndex + 1);
-  });
+
+  const resetProximity = () => {
+    window.cancelAnimationFrame(pointerFrame);
+    nodes.forEach((node) => node.style.removeProperty("--proximity"));
+  };
+
+  dock.addEventListener("pointerleave", resetProximity);
+  dock.addEventListener("pointercancel", resetProximity);
+  window.addEventListener("scroll", resetProximity, { passive: true });
+  window.addEventListener("blur", resetProximity);
+
+  reader.addEventListener(
+    "touchstart",
+    (event) => {
+      const touch = event.changedTouches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    },
+    { passive: true },
+  );
+
+  reader.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      const distanceX = touch.clientX - touchStartX;
+      const distanceY = touch.clientY - touchStartY;
+      if (Math.abs(distanceX) < 48 || Math.abs(distanceX) <= Math.abs(distanceY) * 1.2) return;
+      goTo(activeIndex + (distanceX < 0 ? 1 : -1));
+    },
+    { passive: true },
+  );
 
   setActive(0);
 };

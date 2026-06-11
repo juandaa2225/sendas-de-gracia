@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="icon" href="assets/logos/verde.png" type="image/png" />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=20260611-1" />
+    <link rel="stylesheet" href="styles.css?v=20260611-whatsapp" />
   </head>
   <body>
     <header class="site-header">
@@ -17,7 +17,7 @@
         <img src="assets/logos/verde.png" alt="" class="brand-logo" width="54" height="54" />
         <span class="brand-lockup">
           <span class="brand-subtitle">Iglesia Bíblica</span>
-          <span class="brand-title">Sendas de Gracia</span>
+          <span class="brand-title"><span>Sendas</span><span class="brand-title-small">de</span><span>Gracia</span></span>
         </span>
       </a>
       <button class="nav-toggle" aria-label="Abrir menú" aria-expanded="false" type="button">☰</button>
@@ -43,7 +43,7 @@
     </header>
 
     <main>
-      <section class="hero hero-home">
+      <section class="hero hero-home hero-motion" data-hero-depth>
         <div class="hero-copy">
           <p class="kicker">Iglesia bíblica en misión</p>
           <h1>Impartimos fielmente la verdad bíblica</h1>
@@ -105,7 +105,7 @@
         </div>
       </section>
 
-      <section class="prayer-feature" aria-label="Oración congregacional">
+      <section class="prayer-feature prayer-motion" data-scroll-cinema aria-label="Oración congregacional">
         <img src="assets/images/oracion_horizontal.jpeg" alt="Uno de los líderes de la iglesia dirige un tiempo de oración congregacional" width="1920" height="1080" loading="lazy" />
         <div class="prayer-feature-copy">
           <p class="kicker">Oramos juntos</p>
@@ -120,7 +120,7 @@
           <p class="kicker">Vida congregacional</p>
           <h2 id="vida-title">Aprendemos, adoramos y crecemos juntos.</h2>
         </div>
-        <div class="photo-story-grid">
+        <div class="photo-story-grid motion-gallery" data-motion-gallery>
           <figure class="photo-story-card photo-story-card-class">
             <img src="assets/images/clase2.jpeg" alt="Miembros de la iglesia participan en una clase bíblica" width="1920" height="1080" loading="lazy" />
             <figcaption>Formados en la Palabra</figcaption>
@@ -275,6 +275,6 @@
       <p class="footer-note">Domingos 10:30 a.m. · Cl. 30 Sur #43a - 62, Envigado · +57 350 2152394</p>
     </footer>
 
-    <script src="assets/site.js" defer></script>
+    <script src="assets/site.js?v=20260611-titles6" defer></script>
   </body>
 </html>
