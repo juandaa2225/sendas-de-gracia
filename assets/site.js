@@ -181,7 +181,6 @@ document.querySelectorAll("[data-hero-depth]").forEach(initHeroDepth);
 const initScrollCinema = (section) => {
   if (reducedMotionQuery.matches) {
     section.style.setProperty("--cinema-progress", "1");
-    section.style.setProperty("--cinema-line-width", "102px");
     return;
   }
 
@@ -198,7 +197,6 @@ const initScrollCinema = (section) => {
     section.style.setProperty("--cinema-progress", progress.toFixed(3));
     section.style.setProperty("--cinema-shift", `${centeredProgress * 54}px`);
     section.style.setProperty("--cinema-copy-shift", `${centeredProgress * -22}px`);
-    section.style.setProperty("--cinema-line-width", `${38 + progress * 64}px`);
   };
 
   const requestUpdate = () => {

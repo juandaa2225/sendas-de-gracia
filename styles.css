@@ -750,7 +750,6 @@ h2 {
   --cinema-progress: 0;
   --cinema-shift: 0px;
   --cinema-copy-shift: 0px;
-  --cinema-line-width: 38px;
   position: relative;
   isolation: isolate;
   min-height: clamp(420px, 48vw, 640px);
@@ -759,21 +758,6 @@ h2 {
   overflow: hidden;
   color: var(--ivory);
   background: var(--forest);
-}
-
-.prayer-motion::before {
-  content: "";
-  position: absolute;
-  top: 12%;
-  right: clamp(18px, 3vw, 44px);
-  bottom: 12%;
-  z-index: 2;
-  width: 2px;
-  background: linear-gradient(var(--gold), rgba(194, 164, 107, 0.12));
-  box-shadow: 0 0 22px rgba(194, 164, 107, 0.34);
-  transform: scaleY(var(--cinema-progress));
-  transform-origin: top;
-  pointer-events: none;
 }
 
 .prayer-feature::after {
@@ -813,15 +797,6 @@ h2 {
   will-change: transform;
 }
 
-.prayer-motion .prayer-feature-copy::before {
-  content: "";
-  display: block;
-  width: var(--cinema-line-width);
-  height: 2px;
-  margin-bottom: 22px;
-  background: var(--gold);
-}
-
 .prayer-feature h2 {
   margin-bottom: 16px;
   color: var(--ivory);
@@ -839,7 +814,6 @@ h2 {
   width: fit-content;
   margin-top: 24px;
   padding: 12px 16px;
-  border-left: 3px solid var(--gold);
   background: rgba(12, 33, 25, 0.68);
   color: var(--ivory);
   font-size: 14px;
@@ -2100,10 +2074,6 @@ details.distinctive-card[open] summary::after {
   .prayer-motion > img,
   .prayer-motion .prayer-feature-copy {
     transform: none;
-  }
-
-  .prayer-motion::before {
-    transform: scaleY(1);
   }
 
   .motion-gallery .photo-story-card,
