@@ -18,6 +18,7 @@ Reglas rápidas:
 - No agregues laboratorios, prototipos o variantes visuales al repo si no van a producción; documenta solo lo que ayude al sitio actual.
 - Mantén la configuración MCP esperada en `.devcontainer/codex-config.toml`; el `postStartCommand` de Codespaces debe registrar Playwright si falta en `~/.codex/config.toml`.
 - Mantén el sitio sencillo, reverente, claro y consistente con la guía de diseño.
+- Conserva el “aura verde” en las fotografías de contenido: una sombra ambiental suave derivada del verde bosque. Aplícala al contenedor de la imagen, no a logos ni iconos, y evita que domine la composición.
 - Cuando afectes UI, contenido visual, imágenes, motion o densidad de lectura, aplica también `docs/ux-guide.md`.
 - Escribe el contenido público en español con tildes, ñ y signos correctos, salvo identificadores técnicos, rutas, comandos y URLs.
 - Si durante el trabajo aparece una convención, decisión o flujo que deba recordarse en futuros chats, propón agregarlo aquí o en el documento correspondiente dentro de `docs/`.
