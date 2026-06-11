@@ -768,13 +768,33 @@ h2 {
 }
 
 .prayer-feature {
+  --cinema-progress: 0;
+  --cinema-shift: 0px;
+  --cinema-copy-shift: 0px;
+  --cinema-line-width: 38px;
   position: relative;
+  isolation: isolate;
   min-height: clamp(420px, 48vw, 640px);
   display: grid;
   align-items: end;
   overflow: hidden;
   color: var(--ivory);
   background: var(--forest);
+}
+
+.prayer-motion::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  right: clamp(18px, 3vw, 44px);
+  bottom: 12%;
+  z-index: 2;
+  width: 2px;
+  background: linear-gradient(var(--gold), rgba(194, 164, 107, 0.12));
+  box-shadow: 0 0 22px rgba(194, 164, 107, 0.34);
+  transform: scaleY(var(--cinema-progress));
+  transform-origin: top;
+  pointer-events: none;
 }
 
 .prayer-feature::after {
@@ -795,11 +815,32 @@ h2 {
   object-position: center 28%;
 }
 
+.prayer-motion > img {
+  height: calc(100% + 90px);
+  top: -45px;
+  transform: translate3d(0, var(--cinema-shift), 0) scale(1.045);
+  will-change: transform;
+}
+
 .prayer-feature-copy {
   position: relative;
   z-index: 1;
   width: min(680px, calc(100% - 40px));
   margin: 0 clamp(20px, 9vw, 130px) clamp(42px, 7vw, 86px);
+}
+
+.prayer-motion .prayer-feature-copy {
+  transform: translate3d(0, var(--cinema-copy-shift), 0);
+  will-change: transform;
+}
+
+.prayer-motion .prayer-feature-copy::before {
+  content: "";
+  display: block;
+  width: var(--cinema-line-width);
+  height: 2px;
+  margin-bottom: 22px;
+  background: var(--gold);
 }
 
 .prayer-feature h2 {
@@ -1824,6 +1865,12 @@ details.distinctive-card[open] summary::after {
     object-position: 63% center;
   }
 
+  .prayer-motion > img {
+    height: calc(100% + 54px);
+    top: -27px;
+    transform: translate3d(0, var(--cinema-shift), 0) scale(1.03);
+  }
+
   .prayer-feature-copy {
     width: auto;
     margin: 0 18px 38px;
@@ -1998,5 +2045,14 @@ details.distinctive-card[open] summary::after {
   .hero-motion .hero-card {
     transform: none;
     transition: none;
+  }
+
+  .prayer-motion > img,
+  .prayer-motion .prayer-feature-copy {
+    transform: none;
+  }
+
+  .prayer-motion::before {
+    transform: scaleY(1);
   }
 }

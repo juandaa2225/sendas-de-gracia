@@ -286,6 +286,48 @@ const initAmbientField = (hero) => {
 
 document.querySelectorAll("[data-ambient-field]").forEach(initAmbientField);
 
+const initScrollCinema = (section) => {
+  if (reducedMotionQuery.matches) {
+    section.style.setProperty("--cinema-progress", "1");
+    section.style.setProperty("--cinema-line-width", "102px");
+    return;
+  }
+
+  let isVisible = false;
+  let scrollFrame = 0;
+
+  const update = () => {
+    scrollFrame = 0;
+    if (!isVisible) return;
+    const bounds = section.getBoundingClientRect();
+    const travel = window.innerHeight + bounds.height;
+    const progress = Math.min(1, Math.max(0, (window.innerHeight - bounds.top) / travel));
+    const centeredProgress = progress - 0.5;
+    section.style.setProperty("--cinema-progress", progress.toFixed(3));
+    section.style.setProperty("--cinema-shift", `${centeredProgress * 54}px`);
+    section.style.setProperty("--cinema-copy-shift", `${centeredProgress * -22}px`);
+    section.style.setProperty("--cinema-line-width", `${38 + progress * 64}px`);
+  };
+
+  const requestUpdate = () => {
+    if (!scrollFrame) scrollFrame = window.requestAnimationFrame(update);
+  };
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      isVisible = entry.isIntersecting;
+      if (isVisible) requestUpdate();
+    },
+    { rootMargin: "12% 0px 12% 0px" }
+  );
+
+  window.addEventListener("scroll", requestUpdate, { passive: true });
+  window.addEventListener("resize", requestUpdate);
+  observer.observe(section);
+};
+
+document.querySelectorAll("[data-scroll-cinema]").forEach(initScrollCinema);
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartedAtRightEdge = false;
