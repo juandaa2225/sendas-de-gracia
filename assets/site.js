@@ -322,15 +322,29 @@ const trimText = (value, limit = 190) => {
 
 const formatSermonTitle = (value) => {
   const title = String(value || "Predicación reciente").replace(/\s+/g, " ").trim();
-  const letters = title.match(/\p{L}/gu) || [];
-  const uppercaseLetters = title.match(/\p{Lu}/gu) || [];
+  const parts = title.split("|");
 
-  if (!letters.length || uppercaseLetters.length / letters.length < 0.7) return title;
+  return parts
+    .map((part, index) => {
+      const cleanPart = part.trim();
+      const letters = cleanPart.match(/\p{L}/gu) || [];
+      const uppercaseLetters = cleanPart.match(/\p{Lu}/gu) || [];
+      const isUppercase = letters.length && uppercaseLetters.length / letters.length >= 0.7;
+      let formatted = isUppercase ? cleanPart.toLocaleLowerCase("es") : cleanPart;
 
-  return title
-    .toLocaleLowerCase("es")
-    .split("|")
-    .map((part) => part.trim().replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es")))
+      formatted = formatted.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"));
+      formatted = formatted.replace(
+        /\b(dios|cristo|jesús|jesucristo|espíritu santo|biblia)\b/giu,
+        (term) => term.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"))
+      );
+
+      const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
+      if (isUppercase && isLikelySpeaker) {
+        formatted = formatted.replace(/\b\p{Ll}/gu, (letter) => letter.toLocaleUpperCase("es"));
+      }
+
+      return formatted;
+    })
     .join(" | ");
 };
 
