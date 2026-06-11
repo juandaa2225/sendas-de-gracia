@@ -373,6 +373,22 @@ const initDoctrineCarousel = (carousel) => {
 
   let activeIndex = 0;
   let pointerFrame = 0;
+  let touchStartX = 0;
+  let touchStartY = 0;
+  const mobileQuery = window.matchMedia("(max-width: 760px)");
+  const keywords = [
+    "Biblia",
+    "Dios",
+    "Padre",
+    "Cristo",
+    "Espíritu",
+    "Hombre",
+    "Salvación",
+    "Seguridad",
+    "Iglesia",
+    "Ángeles",
+    "Escatología",
+  ];
   const experience = document.createElement("div");
   const dockLabel = document.createElement("p");
   const dock = document.createElement("div");
@@ -386,7 +402,13 @@ const initDoctrineCarousel = (carousel) => {
     button.setAttribute("role", "tab");
     button.setAttribute("aria-label", `${number}. ${title}`);
     button.dataset.index = String(index);
-    button.innerHTML = `<span aria-hidden="true">${number}</span>`;
+    const numberLabel = document.createElement("span");
+    const keywordLabel = document.createElement("span");
+    numberLabel.className = "doctrine-node-number";
+    numberLabel.textContent = number;
+    keywordLabel.className = "doctrine-node-keyword";
+    keywordLabel.textContent = keywords[index] || title;
+    button.append(numberLabel, keywordLabel);
     dock.append(button);
     return button;
   });
@@ -427,14 +449,20 @@ const initDoctrineCarousel = (carousel) => {
     currentLabel.textContent = String(activeIndex + 1).padStart(2, "0");
   };
 
+  const centerActiveNode = (index) => {
+    if (!mobileQuery.matches) return;
+    const node = nodes[index];
+    const left = node.offsetLeft - (dock.clientWidth - node.offsetWidth) / 2;
+    dock.scrollTo({
+      left,
+      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
+    });
+  };
+
   const goTo = (nextIndex) => {
     const normalizedIndex = (nextIndex + cards.length) % cards.length;
     setActive(normalizedIndex);
-    nodes[normalizedIndex].scrollIntoView({
-      behavior: reducedMotionQuery.matches ? "auto" : "smooth",
-      block: "nearest",
-      inline: "center",
-    });
+    centerActiveNode(normalizedIndex);
   };
 
   prevButton.addEventListener("click", () => goTo(activeIndex - 1));
@@ -463,9 +491,37 @@ const initDoctrineCarousel = (carousel) => {
     });
   });
 
-  dock.addEventListener("pointerleave", () => {
+  const resetProximity = () => {
+    window.cancelAnimationFrame(pointerFrame);
     nodes.forEach((node) => node.style.removeProperty("--proximity"));
-  });
+  };
+
+  dock.addEventListener("pointerleave", resetProximity);
+  dock.addEventListener("pointercancel", resetProximity);
+  window.addEventListener("scroll", resetProximity, { passive: true });
+  window.addEventListener("blur", resetProximity);
+
+  reader.addEventListener(
+    "touchstart",
+    (event) => {
+      const touch = event.changedTouches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    },
+    { passive: true },
+  );
+
+  reader.addEventListener(
+    "touchend",
+    (event) => {
+      const touch = event.changedTouches[0];
+      const distanceX = touch.clientX - touchStartX;
+      const distanceY = touch.clientY - touchStartY;
+      if (Math.abs(distanceX) < 48 || Math.abs(distanceX) <= Math.abs(distanceY) * 1.2) return;
+      goTo(activeIndex + (distanceX < 0 ? 1 : -1));
+    },
+    { passive: true },
+  );
 
   setActive(0);
 };

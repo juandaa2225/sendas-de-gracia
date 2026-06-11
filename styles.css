@@ -1156,11 +1156,14 @@ h2 {
 
 .doctrine-node {
   --proximity: 0;
-  flex: 0 0 clamp(44px, 5vw, 62px);
-  width: clamp(44px, 5vw, 62px);
-  height: clamp(58px, 6vw, 72px);
+  flex: 0 1 94px;
+  min-width: 66px;
+  height: clamp(68px, 6vw, 78px);
   display: grid;
+  align-content: center;
   place-items: center;
+  gap: 3px;
+  padding: 8px 5px;
   border: 1px solid rgba(247, 243, 234, 0.14);
   background: rgba(247, 243, 234, calc(0.07 + var(--proximity) * 0.12));
   color: rgba(247, 243, 234, calc(0.56 + var(--proximity) * 0.44));
@@ -1175,11 +1178,30 @@ h2 {
     transform 110ms linear;
 }
 
-.doctrine-node span {
+.doctrine-node-number,
+.doctrine-node-keyword {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform: scaleY(calc(1 / (1 + var(--proximity) * 0.34)));
+}
+
+.doctrine-node-number {
   font-family: Cinzel, serif;
   font-size: clamp(13px, 1.4vw, 18px);
   font-weight: 600;
-  transform: scaleY(calc(1 / (1 + var(--proximity) * 0.34)));
+}
+
+.doctrine-node-keyword {
+  overflow: visible;
+  font-size: clamp(7px, 0.62vw, 9px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-overflow: clip;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .doctrine-node:hover,
@@ -1967,15 +1989,20 @@ details.distinctive-card[open] summary::after {
   }
 
   .doctrine-node {
-    flex-basis: 52px;
-    width: 52px;
-    height: 64px;
+    flex: 0 0 76px;
+    min-width: 76px;
+    height: 68px;
     scroll-snap-align: center;
     transform: none;
   }
 
-  .doctrine-node span {
+  .doctrine-node-number,
+  .doctrine-node-keyword {
     transform: none;
+  }
+
+  .doctrine-node-keyword {
+    font-size: 9px;
   }
 
   .doctrine-node.is-active {
@@ -1985,6 +2012,7 @@ details.distinctive-card[open] summary::after {
   .doctrine-reader {
     min-height: 330px;
     padding: 34px 24px 28px;
+    touch-action: pan-y;
   }
 
   .doctrine-reader::before {
