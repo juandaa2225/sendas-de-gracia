@@ -165,10 +165,10 @@ const initHeroDepth = (hero) => {
     const bounds = hero.getBoundingClientRect();
     const normalizedX = (event.clientX - bounds.left) / bounds.width;
     const normalizedY = (event.clientY - bounds.top) / bounds.height;
-    hero.style.setProperty("--hero-copy-x", `${(normalizedX - 0.5) * -6}px`);
-    hero.style.setProperty("--hero-copy-y", `${(normalizedY - 0.5) * -4}px`);
-    hero.style.setProperty("--hero-card-x", `${(normalizedX - 0.5) * 9}px`);
-    hero.style.setProperty("--hero-card-y", `${(normalizedY - 0.5) * 6}px`);
+    hero.style.setProperty("--hero-copy-x", `${(normalizedX - 0.5) * -3}px`);
+    hero.style.setProperty("--hero-copy-y", `${(normalizedY - 0.5) * -2}px`);
+    hero.style.setProperty("--hero-card-x", `${(normalizedX - 0.5) * 4}px`);
+    hero.style.setProperty("--hero-card-y", `${(normalizedY - 0.5) * 3}px`);
   });
 
   hero.addEventListener("pointerleave", () => {
@@ -253,13 +253,11 @@ const initMotionGallery = (gallery) => {
         card.style.setProperty("--card-rotate-y", `${(x - 0.5) * 5.5}deg`);
         card.style.setProperty("--card-image-x", `${(0.5 - x) * 11}px`);
         card.style.setProperty("--card-image-y", `${(0.5 - y) * 9}px`);
-        card.style.setProperty("--card-light-x", `${x * 100}%`);
-        card.style.setProperty("--card-light-y", `${y * 100}%`);
       });
     });
     card.addEventListener("pointerleave", () => {
       card.classList.remove("is-engaged");
-      ["--card-rotate-x", "--card-rotate-y", "--card-image-x", "--card-image-y", "--card-light-x", "--card-light-y"].forEach((property) =>
+      ["--card-rotate-x", "--card-rotate-y", "--card-image-x", "--card-image-y"].forEach((property) =>
         card.style.removeProperty(property)
       );
     });
