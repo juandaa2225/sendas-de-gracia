@@ -1579,6 +1579,7 @@ details.distinctive-card[open] summary::after {
   .hero {
     min-height: auto;
     padding-top: 78px;
+    background-position: 74% 42%;
   }
 
   .hero h1 {
