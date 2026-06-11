@@ -89,10 +89,18 @@ a {
 }
 
 .brand-title {
+  display: flex;
+  align-items: center;
+  gap: 0.18em;
   color: var(--forest);
   font-family: Cinzel, serif;
   font-size: clamp(20px, 2.2vw, 31px);
   line-height: 1.05;
+}
+
+.brand-title-small {
+  font-size: 0.725em;
+  line-height: 1;
 }
 
 .site-nav {
