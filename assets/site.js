@@ -328,6 +328,56 @@ const initScrollCinema = (section) => {
 
 document.querySelectorAll("[data-scroll-cinema]").forEach(initScrollCinema);
 
+const initMotionGallery = (gallery) => {
+  const cards = Array.from(gallery.querySelectorAll(".photo-story-card"));
+  if (!cards.length) return;
+
+  if (reducedMotionQuery.matches || !("IntersectionObserver" in window)) {
+    gallery.classList.add("is-in-view");
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry.isIntersecting) return;
+      gallery.classList.add("is-in-view");
+      observer.disconnect();
+    },
+    { threshold: 0.18 }
+  );
+  observer.observe(gallery);
+
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  cards.forEach((card) => {
+    let pointerFrame = 0;
+
+    card.addEventListener("pointerenter", () => card.classList.add("is-engaged"));
+    card.addEventListener("pointermove", (event) => {
+      window.cancelAnimationFrame(pointerFrame);
+      pointerFrame = window.requestAnimationFrame(() => {
+        const bounds = card.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) / bounds.width;
+        const y = (event.clientY - bounds.top) / bounds.height;
+        card.style.setProperty("--card-rotate-x", `${(0.5 - y) * 4.5}deg`);
+        card.style.setProperty("--card-rotate-y", `${(x - 0.5) * 5.5}deg`);
+        card.style.setProperty("--card-image-x", `${(0.5 - x) * 11}px`);
+        card.style.setProperty("--card-image-y", `${(0.5 - y) * 9}px`);
+        card.style.setProperty("--card-light-x", `${x * 100}%`);
+        card.style.setProperty("--card-light-y", `${y * 100}%`);
+      });
+    });
+    card.addEventListener("pointerleave", () => {
+      card.classList.remove("is-engaged");
+      ["--card-rotate-x", "--card-rotate-y", "--card-image-x", "--card-image-y", "--card-light-x", "--card-light-y"].forEach((property) =>
+        card.style.removeProperty(property)
+      );
+    });
+  });
+};
+
+document.querySelectorAll("[data-motion-gallery]").forEach(initMotionGallery);
+
 let touchStartX = 0;
 let touchStartY = 0;
 let touchStartedAtRightEdge = false;
