@@ -320,6 +320,20 @@ const trimText = (value, limit = 190) => {
   return `${text.slice(0, limit).trim()}...`;
 };
 
+const formatSermonTitle = (value) => {
+  const title = String(value || "Predicación reciente").replace(/\s+/g, " ").trim();
+  const letters = title.match(/\p{L}/gu) || [];
+  const uppercaseLetters = title.match(/\p{Lu}/gu) || [];
+
+  if (!letters.length || uppercaseLetters.length / letters.length < 0.7) return title;
+
+  return title
+    .toLocaleLowerCase("es")
+    .split("|")
+    .map((part) => part.trim().replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es")))
+    .join(" | ");
+};
+
 const escapeHtml = (value) =>
   String(value || "")
     .replace(/&/g, "&amp;")
@@ -339,7 +353,7 @@ const renderSermons = (container, sermons) => {
 
   container.innerHTML = selected
     .map((sermon) => {
-      const title = escapeHtml(sermon.title || "Predicación reciente");
+      const title = escapeHtml(formatSermonTitle(sermon.title));
       const url = escapeHtml(sermon.url || `https://www.youtube.com/watch?v=${sermon.videoId}`);
       const thumbnail = escapeHtml(sermon.thumbnail || `https://i.ytimg.com/vi/${sermon.videoId}/hqdefault.jpg`);
       const description = escapeHtml(trimText(sermon.description || "Mensaje reciente del canal actual de la iglesia."));
