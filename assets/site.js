@@ -323,6 +323,18 @@ const trimText = (value, limit = 190) => {
 const formatSermonTitle = (value) => {
   const title = String(value || "Predicación reciente").replace(/\s+/g, " ").trim();
   const parts = title.split("|");
+  const reverentialTerms = {
+    dios: "Dios",
+    jehová: "Jehová",
+    señor: "Señor",
+    cristo: "Cristo",
+    jesús: "Jesús",
+    jesucristo: "Jesucristo",
+    mesías: "Mesías",
+    "espíritu santo": "Espíritu Santo",
+    biblia: "Biblia",
+    escrituras: "Escrituras",
+  };
 
   return parts
     .map((part, index) => {
@@ -335,7 +347,7 @@ const formatSermonTitle = (value) => {
       formatted = formatted.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"));
       formatted = formatted.replace(
         /\b(dios|jehová|señor|cristo|jesús|jesucristo|mesías|espíritu santo|biblia|escrituras)\b/giu,
-        (term) => term.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"))
+        (term) => reverentialTerms[term.toLocaleLowerCase("es")]
       );
 
       const isLikelySpeaker = parts.length >= 3 && index === parts.length - 1 && !/\d/.test(formatted);
