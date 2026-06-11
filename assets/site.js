@@ -334,7 +334,7 @@ const formatSermonTitle = (value) => {
 
       formatted = formatted.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"));
       formatted = formatted.replace(
-        /\b(dios|cristo|jesús|jesucristo|espíritu santo|biblia)\b/giu,
+        /\b(dios|jehová|señor|cristo|jesús|jesucristo|mesías|espíritu santo|biblia|escrituras)\b/giu,
         (term) => term.replace(/^\p{Ll}/u, (letter) => letter.toLocaleUpperCase("es"))
       );
 
